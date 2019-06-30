@@ -5,6 +5,7 @@ mod config;
 mod codec;
 mod client;
 mod state;
+mod protocol;
 
 use std::error::Error;
 use std::sync::{Arc, Mutex};

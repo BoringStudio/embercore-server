@@ -10,3 +10,11 @@ dotenv = "0.14"
 futures = "0.1"
 bytes = "0.4"
 hashbrown = "0.5"
+prost = "0.5"
+path-slash = "0.1"
+chrono = "0.4"
+
+[build-dependencies]
+dotenv = "0.14"
+prost-build = "0.5"
+path-slash = "0.1"
