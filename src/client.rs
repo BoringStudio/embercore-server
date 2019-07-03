@@ -4,13 +4,13 @@ use std::sync::{Arc, Mutex};
 use tokio::io;
 use tokio::prelude::*;
 use futures::sync::mpsc;
-use bytes::Bytes;
 
 use crate::codec::Codec;
 use crate::state::Shared;
+use crate::protocol::base::general_message::Payload;
 
-pub type Tx = mpsc::UnboundedSender<Bytes>;
-pub type Rx = mpsc::UnboundedReceiver<Bytes>;
+pub type Tx = mpsc::UnboundedSender<Payload>;
+pub type Rx = mpsc::UnboundedReceiver<Payload>;
 
 
 pub struct Peer {
@@ -56,7 +56,7 @@ impl Future for Peer {
         for i in 0..MESSAGES_PER_TICK {
             match self.rx.poll().unwrap() {
                 Async::Ready(Some(v)) => {
-                    self.codec.buffer(&v);
+                    self.codec.buffer(v);
 
                     if i + 1 == MESSAGES_PER_TICK {
                         task::current().notify();
@@ -74,7 +74,7 @@ impl Future for Peer {
             println!("Received message: {:?}", data);
 
             let message = match data {
-                Some(message) => message.freeze(),
+                Some(message) => message,
                 None => return Ok(Async::Ready(()))
             };
 
