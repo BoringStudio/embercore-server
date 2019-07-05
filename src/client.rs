@@ -9,19 +9,25 @@ use crate::codec::Codec;
 use crate::state::Shared;
 use crate::protocol::base::general_message::Payload;
 
-pub type Tx = mpsc::UnboundedSender<Payload>;
-pub type Rx = mpsc::UnboundedReceiver<Payload>;
+// Data flow: to client from server
+pub type RequestsTx = mpsc::UnboundedSender<Payload>;
+pub type RequestsRx = mpsc::UnboundedReceiver<Payload>;
+
+// Data flow: to server from client
+pub type ResponsesTx = mpsc::UnboundedSender<(SocketAddr, Payload)>;
+pub type ResponsesRx = mpsc::UnboundedReceiver<(SocketAddr, Payload)>;
 
 
 pub struct Peer {
+    pub addr: SocketAddr,
     pub codec: Codec,
     pub state: Arc<Mutex<Shared>>,
-    pub rx: Rx,
-    pub addr: SocketAddr,
+    pub requests_queue: RequestsRx,
+    pub responses_queue: ResponsesTx,
 }
 
 impl Peer {
-    pub fn new(state: Arc<Mutex<Shared>>, codec: Codec) -> Peer {
+    pub fn new(state: Arc<Mutex<Shared>>, codec: Codec, responses_queue: ResponsesTx) -> Peer {
         let addr = codec.socket.peer_addr().unwrap();
 
         let (tx, rx) = mpsc::unbounded();
@@ -29,10 +35,11 @@ impl Peer {
         state.lock().unwrap().peers.insert(addr, tx);
 
         Peer {
+            addr,
             codec,
             state,
-            rx,
-            addr,
+            requests_queue: rx,
+            responses_queue
         }
     }
 }
@@ -49,16 +56,15 @@ impl Future for Peer {
     type Error = io::Error;
 
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
-        const MESSAGES_PER_TICK: usize = 10;
+        const REQUESTS_PER_TICK: usize = 10;
 
         // buffer all messages for current client
-        // TODO: check buffer capacity
-        for i in 0..MESSAGES_PER_TICK {
-            match self.rx.poll().unwrap() {
-                Async::Ready(Some(v)) => {
-                    self.codec.buffer(v);
+        for i in 0..REQUESTS_PER_TICK {
+            match self.requests_queue.poll().unwrap() {
+                Async::Ready(Some(data)) => {
+                    self.codec.buffer(data);
 
-                    if i + 1 == MESSAGES_PER_TICK {
+                    if i + 1 == REQUESTS_PER_TICK {
                         task::current().notify();
                     }
                 }
@@ -78,15 +84,7 @@ impl Future for Peer {
                 None => return Ok(Async::Ready(()))
             };
 
-            // TODO: send message to game loop
-
-            // now it will just broadcast it to other clients
-
-            for (addr, tx) in &self.state.lock().unwrap().peers {
-                if *addr != self.addr {
-                    tx.unbounded_send(message.clone()).unwrap();
-                }
-            }
+            self.responses_queue.unbounded_send((self.addr.clone(), message)).unwrap();
         }
 
         Ok(Async::NotReady)
