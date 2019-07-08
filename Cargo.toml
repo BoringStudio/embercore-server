@@ -13,6 +13,7 @@ hashbrown = "0.5"
 prost = "0.5"
 path-slash = "0.1"
 chrono = "0.4"
+rlua = "0.16"
 
 [build-dependencies]
 dotenv = "0.14"

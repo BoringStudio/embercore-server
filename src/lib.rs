@@ -32,7 +32,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
     let (response_tx, response_rx) = mpsc::unbounded();
 
-    let state = State::new(shared.clone(), response_rx);
+    let mut state = State::new(shared.clone(), response_rx);
 
     let listener = create_listener(&config)?
         .map_err(|e| eprintln!("Accept failed: {:?}", e))
@@ -40,6 +40,8 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             process_connection(socket, shared.clone(), response_tx.clone());
             Ok(())
         });
+
+    state.on_init();
 
     let mut current_time = Instant::now();
     let mut last_time = current_time;
@@ -50,7 +52,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             let dt = current_time - last_time;
             last_time = current_time;
 
-            state.game_loop(dt.as_secs_f64());
+            state.on_update(dt.as_secs_f64());
             future::ok(state)
         })
         .map(|_| {})
