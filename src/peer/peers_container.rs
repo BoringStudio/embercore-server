@@ -1,19 +1,31 @@
+use futures::sync::mpsc;
 use rust_dense_bitset::{BitSet, DenseBitSet};
 
 use crate::peer::{Peer, RequestsTx};
 
+pub type ConnectionEventsTx = mpsc::UnboundedSender<ConnectionEvent>;
+pub type ConnectionEventsRx = mpsc::UnboundedReceiver<ConnectionEvent>;
+
+pub enum ConnectionEvent {
+    Connected(u32),
+    Disconnected(u32),
+}
+
 pub struct PeersContainer {
     peers: Vec<Option<RequestsTx>>,
     slots: DenseBitSet,
+
+    connection_events_queue: ConnectionEventsTx,
 }
 
 impl PeersContainer {
-    pub fn new() -> PeersContainer {
+    pub fn new(connection_events_queue: ConnectionEventsTx) -> PeersContainer {
         let slots = !DenseBitSet::new();
 
         PeersContainer {
             peers: vec![None; 64],
             slots,
+            connection_events_queue,
         }
     }
 
@@ -26,7 +38,9 @@ impl PeersContainer {
 
         peer.id = Some(first_empty);
 
-        println!("Player connected: {}", first_empty);
+        self.connection_events_queue
+            .unbounded_send(ConnectionEvent::Connected(first_empty))
+            .unwrap();
 
         self.peers[first_empty as usize] = Some(requests_queue);
         self.slots.set_bit(first_empty as usize, false);
@@ -39,7 +53,9 @@ impl PeersContainer {
             return false;
         }
 
-        println!("Player disconnected: {}", id);
+        self.connection_events_queue
+            .unbounded_send(ConnectionEvent::Disconnected(id))
+            .unwrap();
 
         self.peers[id as usize] = None;
         self.slots.set_bit(id as usize, true);
