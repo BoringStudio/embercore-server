@@ -1,4 +1,4 @@
-use std::{ fs, error, env};
+use std::{error, fs};
 use std::path::Path;
 
 use dotenv::*;
@@ -32,10 +32,7 @@ fn read_dir(protocol_dir: &str) -> Result<Vec<String>> {
 fn main() {
     dotenv().ok();
 
-    let protocol_dir = match env::var("PROTOCOL_DIR") {
-        Ok(dir) => dir,
-        Err(_) => panic!("PROTOCOL_DIR must be set")
-    };
+    let protocol_dir = String::from("./proto/protocol");
 
     let files = match read_dir(&protocol_dir) {
         Ok(files) => files,
