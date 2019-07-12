@@ -1,10 +1,10 @@
-use tokio::io;
-use tokio::prelude::*;
-use tokio::net::TcpStream;
 use bytes::BytesMut;
 use chrono::prelude::*;
+use prost::{decode_length_delimiter, Message};
+use tokio::io;
+use tokio::net::TcpStream;
+use tokio::prelude::*;
 
-use prost::{Message, decode_length_delimiter};
 use crate::protocol::base::*;
 use crate::protocol::base::general_message::Payload;
 
@@ -29,7 +29,7 @@ impl Codec {
     pub fn buffer(&mut self, payload: general_message::Payload) {
         let message = GeneralMessage {
             time: Utc::now().timestamp_millis(),
-            payload: Some(payload)
+            payload: Some(payload),
         };
 
         message.encode_length_delimited(&mut self.output_buffer).unwrap();

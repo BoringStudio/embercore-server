@@ -15,8 +15,8 @@ pub struct AuthResponse {
 pub mod auth_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
-        #[prost(int32, tag="1")]
-        pub user_id: i32,
+        #[prost(uint32, tag="1")]
+        pub user_id: u32,
     }
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]

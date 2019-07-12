@@ -2,42 +2,54 @@
 
 #[macro_use]
 extern crate futures;
+#[macro_use]
+extern crate specs_derive;
+
+use std::error::Error;
+use std::net::SocketAddr;
+use std::sync::{Arc, Mutex};
+use std::time::Instant;
+
+use futures::future;
+use futures::sync::mpsc;
+use tokio::net::tcp::Incoming;
+use tokio::net::TcpListener;
+use tokio::prelude::*;
+use tokio::timer::Interval;
+
+use crate::config::Config;
+use crate::connection::Connection;
+use crate::peer::PeersContainer;
+use crate::state::State;
+
+mod game;
+mod protocol;
 
 mod config;
 mod codec;
-mod client;
+mod peer;
+mod connection;
 mod state;
-mod protocol;
-
-use std::error::Error;
-use std::sync::{Arc, Mutex};
-use std::net::SocketAddr;
-
-use tokio::prelude::*;
-use tokio::net::{TcpListener, TcpStream};
-use tokio::net::tcp::Incoming;
-use tokio::timer::Interval;
-use futures::future;
-use futures::sync::mpsc;
-
-use crate::state::{Shared, State};
-use crate::client::{Peer, ResponsesTx};
-use crate::config::Config;
-use std::time::Instant;
 
 pub fn run() -> Result<(), Box<dyn Error>> {
     let config = Config::new()?;
 
-    let shared = Arc::new(Mutex::new(Shared::new()));
+    let peers_container = Arc::new(Mutex::new(PeersContainer::new()));
 
     let (response_tx, response_rx) = mpsc::unbounded();
 
-    let mut state = State::new(shared.clone(), response_rx);
+    let mut state = State::new(peers_container.clone(), response_rx);
 
     let listener = create_listener(&config)?
         .map_err(|e| eprintln!("Accept failed: {:?}", e))
         .for_each(move |socket| {
-            process_connection(socket, shared.clone(), response_tx.clone());
+            let connection = Connection::new(socket,
+                                             response_tx.clone(), peers_container.clone())
+                .map_err(|e| {
+                    println!("Error: {:?}", e);
+                });
+
+            tokio::spawn(connection);
             Ok(())
         });
 
@@ -80,18 +92,4 @@ fn create_listener(config: &Config) -> Result<Incoming, String> {
     };
 
     Ok(listener.incoming())
-}
-
-
-fn process_connection(socket: TcpStream, state: Arc<Mutex<Shared>>, responses_queue: ResponsesTx) {
-    use crate::codec::*;
-
-    let client = Peer::new(state, Codec::new(socket), responses_queue);
-
-    let connection = client
-        .map_err(|e| {
-            println!("Message error: {:?}", e);
-        });
-
-    tokio::spawn(connection);
 }

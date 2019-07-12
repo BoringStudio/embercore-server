@@ -15,7 +15,7 @@ message AuthResponse {
     }
 
     message Result {
-        int32 user_id = 1;
+        uint32 user_id = 1;
         reserved 2;
         // auth_token = 2;
     }

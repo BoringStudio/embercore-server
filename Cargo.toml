@@ -14,6 +14,9 @@ prost = "0.5"
 path-slash = "0.1"
 chrono = "0.4"
 rlua = "0.16"
+specs = "0.15"
+specs-derive = "0.4"
+rust-dense-bitset = "0.1"
 
 [build-dependencies]
 dotenv = "0.14"
