@@ -1,8 +1,8 @@
 # Rust specific
-/target/
-Cargo.lock
+**/target/
+**/Cargo.lock
 **/*.rs.bk
 
 # Project specific
-.idea/
+**/.idea/
 .env
