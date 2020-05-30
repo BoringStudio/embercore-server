@@ -1,24 +1,2 @@
-[package]
-name = "embercore-server"
-version = "0.1.0"
-authors = ["Rexagon <reide740@gmail.com>"]
-edition = "2018"
-
-[dependencies]
-tokio = "0.1"
-dotenv = "0.14"
-futures = "0.1"
-bytes = "0.4"
-hashbrown = "0.5"
-prost = "0.5"
-path-slash = "0.1"
-chrono = "0.4"
-rlua = "0.16"
-specs = "0.15"
-specs-derive = "0.4"
-rust-dense-bitset = "0.1"
-
-[build-dependencies]
-dotenv = "0.14"
-prost-build = "0.5"
-path-slash = "0.1"
+[workspace]
+members = ["models", "server", "test-client"]
