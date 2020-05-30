@@ -1,0 +1,6 @@
+server_address: '127.0.0.1:12000'
+redis_url: 'redis://127.0.0.1:6379/0'
+database_url: 'postgresql://127.0.0.1:5432'
+database_user_name: 'admin'
+database_user_password: 'admin'
+database_max_connections: 100

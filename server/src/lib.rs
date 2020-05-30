@@ -1,3 +1,5 @@
+pub mod config;
+
 use futures::prelude::*;
 use tokio::net::TcpListener;
 use tokio_serde::formats::SymmetricalBincode;
@@ -5,8 +7,10 @@ use tokio_util::codec::{FramedRead, LengthDelimitedCodec};
 
 use models::*;
 
-pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let mut listener = TcpListener::bind("0.0.0.0:10101").await.unwrap();
+use crate::config::Config;
+
+pub async fn run(settings: Config) -> Result<(), Box<dyn std::error::Error>> {
+    let mut listener = TcpListener::bind(settings.server_address).await.unwrap();
 
     log::info!("listening on {:?}", listener.local_addr());
 
