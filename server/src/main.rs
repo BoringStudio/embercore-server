@@ -26,7 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let log_filters = std::env::var("RUST_LOG").unwrap_or_default();
 
-    pretty_env_logger::formatted_timed_builder()
+    env_logger::Builder::new()
         .parse_filters(&log_filters)
         .format(|formatter, record| {
             writeln!(

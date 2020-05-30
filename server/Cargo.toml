@@ -16,7 +16,7 @@ async-trait = "0.1"
 bincode = { git = "https://github.com/servo/bincode.git" }
 chrono = { version = "0.4.11", features = ["serde"] }
 config = { version = "0.9", features = ["yaml"] }
-clap = { version = "2.33", features = ["yaml"] }
+clap = { version = "2.33" }
 futures = { version = "0.3" }
 log = { version = "0.4", features = ["std", "serde"] }
 rust_decimal = "1"
@@ -26,5 +26,5 @@ snafu = "*"
 tokio = { version = "0.2", features = ["full"] }
 tokio-serde = { version = "0.6", features = ["bincode"] }
 tokio-util = { version = "0.3", features = ["codec"] }
-pretty_env_logger = "0.4"
+env_logger = "0.7"
 uuid = { version = "0.8", features = ["v4", "serde"] }
