@@ -1,19 +1,19 @@
 mod config;
 
-use std::io::Write;
-
 use clap::{App, Arg};
 use futures::SinkExt;
 use tokio::net::TcpStream;
 use tokio_serde::formats::SymmetricalBincode;
 use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
 
-use models::*;
+use embercore::*;
 
 use crate::config::Config;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    embercore::utils::init_logger();
+
     let matches = App::new("test-client")
         .version("1.0")
         .arg(
@@ -31,21 +31,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let path = matches.value_of("config").unwrap();
         Config::new(path)?
     };
-
-    let log_filters = std::env::var("RUST_LOG").unwrap_or_default();
-
-    env_logger::Builder::new()
-        .parse_filters(&log_filters)
-        .format(|formatter, record| {
-            writeln!(
-                formatter,
-                "{} [{}] - {}",
-                chrono::Local::now().format("%Y-%m-%dT%H:%M:%S"),
-                record.level(),
-                record.args()
-            )
-        })
-        .init();
 
     let socket = TcpStream::connect(config.server_address).await.unwrap();
 

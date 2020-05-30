@@ -4,8 +4,8 @@ version = "0.1.0"
 authors = ["Rexagon <reide740@gmail.com>"]
 edition = "2018"
 
-[dependencies.models]
-path = "../models"
+[dependencies.embercore]
+git = "https://github.com/BoringStudio/libembercore.git"
 
 [dependencies]
 async-trait = "0.1"

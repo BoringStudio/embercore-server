@@ -1,11 +1,11 @@
-use std::io::Write;
-
 use clap::{App, Arg};
 
 use embercore_server_lib::config::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    embercore::utils::init_logger();
+
     let matches = App::new("embercore-server")
         .version("1.0")
         .arg(
@@ -23,21 +23,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let path = matches.value_of("config").unwrap();
         Config::new(path)?
     };
-
-    let log_filters = std::env::var("RUST_LOG").unwrap_or_default();
-
-    env_logger::Builder::new()
-        .parse_filters(&log_filters)
-        .format(|formatter, record| {
-            writeln!(
-                formatter,
-                "{} [{}] - {}",
-                chrono::Local::now().format("%Y-%m-%dT%H:%M:%S"),
-                record.level(),
-                record.args()
-            )
-        })
-        .init();
 
     embercore_server_lib::run(config).await
 }
