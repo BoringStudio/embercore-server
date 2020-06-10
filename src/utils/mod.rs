@@ -1,5 +1,5 @@
-use serde::de::{self, Error, MapAccess, Visitor};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde::de::{self, MapAccess, Visitor};
+use serde::{Deserialize, Deserializer};
 use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;

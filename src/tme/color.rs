@@ -64,7 +64,6 @@ impl ToString for Color {
 
 pub mod opt_color_serde {
     use super::Color;
-    use serde::de::Error;
     use serde::{self, Deserialize, Deserializer, Serializer};
     use std::str::FromStr;
 

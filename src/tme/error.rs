@@ -39,4 +39,24 @@ pub enum Error {
         backtrace: Backtrace,
         s:         String,
     },
+    #[snafu(display("Unable parse compression from string: {}", s))]
+    ParseCompression {
+        backtrace: Backtrace,
+        s:         String,
+    },
+    #[snafu(display("Unable parse draw order from string: {}", s))]
+    ParseDrawOrder {
+        backtrace: Backtrace,
+        s:         String,
+    },
+    #[snafu(display("Unable parse encoding from string: {}", s))]
+    ParseEncoding {
+        backtrace: Backtrace,
+        s:         String,
+    },
+    #[snafu(display("Unable parse layer type from string: {}", s))]
+    ParseLayerType {
+        backtrace: Backtrace,
+        s:         String,
+    },
 }

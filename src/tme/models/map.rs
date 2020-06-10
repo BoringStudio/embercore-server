@@ -1,7 +1,7 @@
 use super::super::error;
 use super::{layer::Layer, property::Property, tileset::Tileset};
 use crate::tme::color::{opt_color_serde, Color};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
 #[derive(Debug, Serialize, Deserialize)]
