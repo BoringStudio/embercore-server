@@ -5,11 +5,11 @@ use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Config {
-    pub server_address: SocketAddr,
-    pub redis_url: String,
-    pub database_url: String,
-    pub database_user_name: String,
-    pub database_user_password: String,
+    pub server_address:           SocketAddr,
+    pub redis_url:                String,
+    pub database_url:             String,
+    pub database_user_name:       String,
+    pub database_user_password:   String,
     pub database_max_connections: u32,
 }
 
