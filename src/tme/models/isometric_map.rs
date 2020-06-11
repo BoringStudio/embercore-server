@@ -12,7 +12,7 @@ use crate::tme::color::opt_color_serde;
 use crate::tme::color::Color;
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase", deny_unknown_fields)]
+#[serde(rename_all = "lowercase")]
 pub struct IsometricMap {
     #[serde(with = "opt_color_serde")]
     background_color: Option<Color>,

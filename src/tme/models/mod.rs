@@ -1,15 +1,27 @@
 pub mod chunk;
 pub mod data_source;
-pub mod group_layer;
-pub mod hexagonal_map;
-pub mod image_layer;
-pub mod isometric_map;
 pub mod layer;
 pub mod map;
 pub mod object;
-pub mod object_group_layer;
-pub mod orthogonal_map;
+pub mod point;
 pub mod property;
-pub mod staggered_map;
-pub mod tile_layer;
+pub mod text;
 pub mod tileset;
+
+pub mod hexagonal_map;
+pub mod isometric_map;
+pub mod orthogonal_map;
+pub mod staggered_map;
+
+pub mod group_layer;
+pub mod image_layer;
+pub mod object_group_layer;
+pub mod tile_layer;
+
+pub mod ellipse_object;
+pub mod entity_object;
+pub mod point_object;
+pub mod polygon_object;
+pub mod polyline_object;
+pub mod rectangle_object;
+pub mod text_object;
