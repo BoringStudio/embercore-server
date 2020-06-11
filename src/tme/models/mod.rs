@@ -1,7 +1,15 @@
 pub mod chunk;
+pub mod data_source;
+pub mod group_layer;
+pub mod hexagonal_map;
+pub mod image_layer;
+pub mod isometric_map;
 pub mod layer;
 pub mod map;
 pub mod object;
+pub mod object_group_layer;
+pub mod orthogonal_map;
 pub mod property;
-pub mod redata;
+pub mod staggered_map;
+pub mod tile_layer;
 pub mod tileset;

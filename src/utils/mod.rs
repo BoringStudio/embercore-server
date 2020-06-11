@@ -1,8 +1,17 @@
-use serde::de::{self, MapAccess, Visitor};
-use serde::{Deserialize, Deserializer};
-use std::fmt;
-use std::marker::PhantomData;
-use std::str::FromStr;
+use serde::{
+    de::{
+        self,
+        MapAccess,
+        Visitor,
+    },
+    Deserialize,
+    Deserializer,
+};
+use std::{
+    fmt,
+    marker::PhantomData,
+    str::FromStr,
+};
 
 pub fn deserialize_str_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
 where

@@ -1,35 +1,21 @@
-use super::super::{color::Color, error};
-use super::{chunk::Chunk, object::Object, property::Property, redata::ReData};
-use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
+use serde::Deserialize;
+use serde::Serialize;
+
+use super::group_layer::GroupLayer;
+use super::image_layer::ImageLayer;
+use super::object_group_layer::ObjectGroupLayer;
+use super::tile_layer::TileLayer;
+use crate::tme::error;
+
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub struct Layer {
-    chunks:            Vec<Chunk>,
-    compression:       Compression,
-    data:              Option<ReData>,
-    draw_order:        Option<DrawOrder>,
-    encoding:          Option<Encoding>,
-    height:            i32,
-    id:                i32,
-    image:             Option<String>,
-    layers:            Option<Vec<Layer>>,
-    name:              String,
-    objects:           Option<Vec<Object>>,
-    offset_x:          f64,
-    offset_y:          f64,
-    opacity:           f64,
-    properties:        Vec<Property>,
-    start_x:           i32,
-    start_y:           i32,
-    transparent_color: Option<Color>,
-    #[serde(rename = "type")]
-    layer_type:        LayerType,
-    visible:           bool,
-    width:             i32,
-    x:                 i32,
-    y:                 i32,
+#[serde(rename_all = "lowercase", tag = "type")]
+pub enum Layer {
+    TileLayer(TileLayer),
+    ObjectGroupLayer(ObjectGroupLayer),
+    ImageLayer(ImageLayer),
+    GroupLayer(GroupLayer),
 }
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]

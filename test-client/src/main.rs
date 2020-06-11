@@ -1,10 +1,16 @@
 mod config;
 
-use clap::{App, Arg};
+use clap::{
+    App,
+    Arg,
+};
 use futures::SinkExt;
 use tokio::net::TcpStream;
 use tokio_serde::formats::SymmetricalBincode;
-use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
+use tokio_util::codec::{
+    FramedWrite,
+    LengthDelimitedCodec,
+};
 
 use embercore::*;
 

@@ -6,7 +6,10 @@ pub mod utils;
 use futures::prelude::*;
 use tokio::net::TcpListener;
 use tokio_serde::formats::SymmetricalBincode;
-use tokio_util::codec::{FramedRead, LengthDelimitedCodec};
+use tokio_util::codec::{
+    FramedRead,
+    LengthDelimitedCodec,
+};
 
 use embercore::*;
 

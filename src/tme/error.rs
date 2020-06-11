@@ -1,5 +1,7 @@
-use snafu::Backtrace;
-use snafu::Snafu;
+use snafu::{
+    Backtrace,
+    Snafu,
+};
 
 #[derive(Debug, Snafu)]
 #[snafu(visibility(pub))]

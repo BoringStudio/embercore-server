@@ -1,7 +1,10 @@
+use std::str::FromStr;
+
+use serde::Deserialize;
+use serde::Serialize;
+
 use super::error;
 use crate::prelude::*;
-use serde::{Deserialize, Serialize};
-use std::str::FromStr;
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]
 pub struct Color {
@@ -63,9 +66,14 @@ impl ToString for Color {
 }
 
 pub mod opt_color_serde {
-    use super::Color;
-    use serde::{self, Deserialize, Deserializer, Serializer};
     use std::str::FromStr;
+
+    use serde::de;
+    use serde::Deserialize;
+    use serde::Deserializer;
+    use serde::Serializer;
+
+    use super::Color;
 
     pub fn serialize<S>(date: &Option<Color>, s: S) -> Result<S::Ok, S::Error>
     where
@@ -83,7 +91,7 @@ pub mod opt_color_serde {
     {
         let s: Option<String> = Option::deserialize(deserializer)?;
         if let Some(s) = s {
-            return Ok(Some(Color::from_str(&s).map_err(serde::de::Error::custom)?));
+            return Ok(Some(Color::from_str(&s).map_err(de::Error::custom)?));
         }
 
         Ok(None)
