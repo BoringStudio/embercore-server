@@ -5,8 +5,88 @@ use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub struct Map {
+#[serde(untagged)]
+pub enum Map {
+    Orthogonal(OrthogonalMap),
+    Isometric(IsometricMap),
+    Staggered(StaggeredMap),
+    Hexagonal(HexagonalMap),
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase", deny_unknown_fields)]
+pub struct OrthogonalMap {
+    #[serde(with = "opt_color_serde")]
+    background_color: Option<Color>,
+    height:           i32,
+    infinite:         bool,
+    layers:           Vec<Layer>,
+    next_layer_id:    i32,
+    next_object_id:   i32,
+    orientation:      Orientation,
+    properties:       Vec<Property>,
+    render_order:     RenderOrder,
+    tiled_version:    String,
+    tile_height:      i32,
+    tile_sets:        Vec<Tileset>,
+    tile_width:       i32,
+    #[serde(rename = "type")]
+    map_type:         MapType,
+    version:          serde_json::Number,
+    width:            i32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase", deny_unknown_fields)]
+pub struct IsometricMap {
+    #[serde(with = "opt_color_serde")]
+    background_color: Option<Color>,
+    height:           i32,
+    infinite:         bool,
+    layers:           Vec<Layer>,
+    next_layer_id:    i32,
+    next_object_id:   i32,
+    orientation:      Orientation,
+    properties:       Vec<Property>,
+    render_order:     RenderOrder,
+    tiled_version:    String,
+    tile_height:      i32,
+    tile_sets:        Vec<Tileset>,
+    tile_width:       i32,
+    #[serde(rename = "type")]
+    map_type:         MapType,
+    version:          serde_json::Number,
+    width:            i32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase", deny_unknown_fields)]
+pub struct StaggeredMap {
+    #[serde(with = "opt_color_serde")]
+    background_color: Option<Color>,
+    height:           i32,
+    infinite:         bool,
+    layers:           Vec<Layer>,
+    next_layer_id:    i32,
+    next_object_id:   i32,
+    orientation:      Orientation,
+    properties:       Vec<Property>,
+    render_order:     RenderOrder,
+    stagger_axis:     StaggerAxis,
+    stagger_index:    StaggerIndex,
+    tiled_version:    String,
+    tile_height:      i32,
+    tile_sets:        Vec<Tileset>,
+    tile_width:       i32,
+    #[serde(rename = "type")]
+    map_type:         MapType,
+    version:          serde_json::Number,
+    width:            i32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase", deny_unknown_fields)]
+pub struct HexagonalMap {
     #[serde(with = "opt_color_serde")]
     background_color: Option<Color>,
     height:           i32,
@@ -20,7 +100,7 @@ pub struct Map {
     render_order:     RenderOrder,
     stagger_axis:     StaggerAxis,
     stagger_index:    StaggerIndex,
-    tile_version:     String,
+    tiled_version:    String,
     tile_height:      i32,
     tile_sets:        Vec<Tileset>,
     tile_width:       i32,
