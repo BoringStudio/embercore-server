@@ -1,16 +1,51 @@
 use super::super::error;
 use super::{layer::Layer, property::Property, tileset::Tileset};
 use crate::tme::color::{opt_color_serde, Color};
-use serde::{Deserialize, Serialize};
+use serde::{de, Deserialize, Deserializer, Serialize};
 use std::str::FromStr;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize)]
 #[serde(untagged)]
 pub enum Map {
     Orthogonal(OrthogonalMap),
     Isometric(IsometricMap),
     Staggered(StaggeredMap),
     Hexagonal(HexagonalMap),
+}
+
+impl<'de> Deserialize<'de> for Map {
+    fn deserialize<D>(deserializer: D) -> Result<Self, <D as Deserializer<'de>>::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        use serde::de::Error;
+
+        #[derive(Debug, PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]
+        #[serde(rename_all = "lowercase", tag = "orientation")]
+        enum OrientationHelper {
+            Orthogonal,
+            Isometric,
+            Staggered,
+            Hexagonal,
+        }
+
+        let v = serde_json::Value::deserialize(deserializer)?;
+        let o = OrientationHelper::deserialize(&v).map_err(de::Error::custom)?;
+        match o {
+            OrientationHelper::Orthogonal => Ok(Map::Orthogonal(
+                OrthogonalMap::deserialize(&v).map_err(de::Error::custom)?,
+            )),
+            OrientationHelper::Isometric => Ok(Map::Isometric(
+                IsometricMap::deserialize(&v).map_err(de::Error::custom)?,
+            )),
+            OrientationHelper::Staggered => Ok(Map::Staggered(
+                StaggeredMap::deserialize(&v).map_err(de::Error::custom)?,
+            )),
+            OrientationHelper::Hexagonal => Ok(Map::Hexagonal(
+                HexagonalMap::deserialize(&v).map_err(de::Error::custom)?,
+            )),
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
