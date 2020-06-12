@@ -5,6 +5,7 @@ pub mod grid;
 pub mod layer;
 pub mod map;
 pub mod object;
+pub mod object_template;
 pub mod orientation;
 pub mod point;
 pub mod property;
@@ -28,7 +29,7 @@ pub mod object_group_layer;
 pub mod tile_layer;
 
 pub mod ellipse_object;
-pub mod entity_object;
+pub mod general_object;
 pub mod point_object;
 pub mod polygon_object;
 pub mod polyline_object;

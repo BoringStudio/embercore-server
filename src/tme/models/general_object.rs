@@ -5,7 +5,7 @@ use super::property::Property;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
-pub struct EntityObject {
+pub struct GeneralObject {
     gid:        Option<i32>,
     height:     f64,
     id:         i32,
