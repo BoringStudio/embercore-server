@@ -3,10 +3,10 @@ use serde::Serialize;
 
 use super::layer::Layer;
 use super::map::MapType;
-use super::map::Orientation;
 use super::map::RenderOrder;
 use super::map::StaggerAxis;
 use super::map::StaggerIndex;
+use super::orientation::Orientation;
 use super::property::Property;
 use super::tileset::Tileset;
 
@@ -24,7 +24,7 @@ pub struct StaggeredMap {
     next_layer_id:    i32,
     next_object_id:   i32,
     orientation:      Orientation,
-    properties:       Vec<Property>,
+    properties:       Option<Vec<Property>>,
     render_order:     RenderOrder,
     stagger_axis:     StaggerAxis,
     stagger_index:    StaggerIndex,

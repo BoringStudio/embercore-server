@@ -1,12 +1,21 @@
 pub mod chunk;
 pub mod data_source;
+pub mod frame;
+pub mod grid;
 pub mod layer;
 pub mod map;
 pub mod object;
+pub mod orientation;
 pub mod point;
 pub mod property;
+pub mod terrain;
 pub mod text;
+pub mod tile;
+pub mod tile_offset;
 pub mod tileset;
+pub mod wang_color;
+pub mod wang_set;
+pub mod wang_tile;
 
 pub mod hexagonal_map;
 pub mod isometric_map;

@@ -20,7 +20,7 @@ pub struct TileLayer {
     offset_x:    f64,
     offset_y:    f64,
     opacity:     f64,
-    properties:  Vec<Property>,
+    properties:  Option<Vec<Property>>,
     start_x:     i32,
     start_y:     i32,
     visible:     bool,
