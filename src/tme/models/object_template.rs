@@ -11,7 +11,7 @@ use crate::tme::color::Color;
 pub struct ObjectTemplate {
     #[serde(rename = "type")]
     obj_temp_type: ObjectTemplateType,
-    tileset:       Tileset,
+    tileset:       Option<ExternalTileset>,
     object:        Object,
 }
 
@@ -19,4 +19,11 @@ pub struct ObjectTemplate {
 #[serde(rename_all = "lowercase")]
 pub enum ObjectTemplateType {
     Template,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub struct ExternalTileset {
+    first_gid: i32,
+    source:    String,
 }
