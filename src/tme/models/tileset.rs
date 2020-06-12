@@ -6,6 +6,7 @@ use super::property::Property;
 use super::terrain::Terrain;
 use super::tile::Tile;
 use super::tile_offset::TileOffset;
+use super::utils;
 use super::wang_set::WangSet;
 
 use crate::tme::color::Color;
@@ -35,6 +36,7 @@ pub struct Tileset {
     transparent_color: Option<Color>,
     #[serde(rename = "type")]
     tileset_type:      String,
-    version:           serde_json::Number,
+    #[serde(deserialize_with = "utils::deserialize_value_to_string")]
+    version:           String,
     wang_sets:         Vec<WangSet>,
 }

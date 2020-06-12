@@ -1,3 +1,5 @@
+mod utils;
+
 pub mod chunk;
 pub mod data_source;
 pub mod frame;

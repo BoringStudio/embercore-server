@@ -2,9 +2,6 @@ use serde::Deserialize;
 use serde::Serialize;
 
 use super::object::Object;
-use super::tileset::Tileset;
-
-use crate::tme::color::Color;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
