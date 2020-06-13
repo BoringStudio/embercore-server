@@ -7,17 +7,17 @@ use super::text::Text;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub struct TextObject {
-    height:     f64,
-    id:         i32,
-    name:       String,
-    properties: Option<Vec<Property>>,
-    rotation:   f64,
-    template:   Option<String>,
-    text:       Text,
+    pub height:     f64,
+    pub id:         i32,
+    pub name:       String,
+    pub properties: Option<Vec<Property>>,
+    pub rotation:   f64,
+    pub template:   Option<String>,
+    pub text:       Text,
     #[serde(rename = "type")]
-    obj_type:   String,
-    visible:    bool,
-    width:      f64,
-    x:          f64,
-    y:          f64,
+    pub obj_type:   String,
+    pub visible:    bool,
+    pub width:      f64,
+    pub x:          f64,
+    pub y:          f64,
 }

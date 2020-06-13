@@ -7,9 +7,9 @@ use super::object::Object;
 #[serde(rename_all = "lowercase")]
 pub struct ObjectTemplate {
     #[serde(rename = "type")]
-    obj_temp_type: ObjectTemplateType,
-    tileset:       Option<ExternalTileset>,
-    object:        Object,
+    pub obj_temp_type: ObjectTemplateType,
+    pub tileset:       Option<ExternalTileset>,
+    pub object:        Object,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Copy)]
@@ -21,6 +21,6 @@ pub enum ObjectTemplateType {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub struct ExternalTileset {
-    first_gid: i32,
-    source:    String,
+    pub first_gid: i32,
+    pub source:    String,
 }

@@ -8,15 +8,15 @@ use super::property::Property;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub struct Tile {
-    animation:    Option<Vec<Frame>>,
-    id:           i32,
-    image:        Option<String>,
-    image_height: Option<i32>,
-    image_width:  Option<i32>,
-    object_group: Option<Layer>,
-    probability:  Option<f64>,
-    properties:   Option<Vec<Property>>,
-    terrain:      Option<Vec<i32>>,
+    pub animation:    Option<Vec<Frame>>,
+    pub id:           i32,
+    pub image:        Option<String>,
+    pub image_height: Option<i32>,
+    pub image_width:  Option<i32>,
+    pub object_group: Option<Layer>,
+    pub probability:  Option<f64>,
+    pub properties:   Option<Vec<Property>>,
+    pub terrain:      Option<Vec<i32>>,
     #[serde(rename = "type")]
-    tile_type:    Option<String>,
+    pub tile_type:    Option<String>,
 }

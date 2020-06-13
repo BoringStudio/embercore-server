@@ -9,6 +9,7 @@ use super::map::StaggerIndex;
 use super::orientation::Orientation;
 use super::property::Property;
 use super::tileset::Tileset;
+use super::utils;
 
 use crate::tme::color::opt_color_serde;
 use crate::tme::color::Color;
@@ -17,23 +18,24 @@ use crate::tme::color::Color;
 #[serde(rename_all = "lowercase")]
 pub struct StaggeredMap {
     #[serde(with = "opt_color_serde")]
-    background_color: Option<Color>,
-    height:           i32,
-    infinite:         bool,
-    layers:           Vec<Layer>,
-    next_layer_id:    i32,
-    next_object_id:   i32,
-    orientation:      Orientation,
-    properties:       Option<Vec<Property>>,
-    render_order:     RenderOrder,
-    stagger_axis:     StaggerAxis,
-    stagger_index:    StaggerIndex,
-    tiled_version:    String,
-    tile_height:      i32,
-    tile_sets:        Vec<Tileset>,
-    tile_width:       i32,
+    pub background_color: Option<Color>,
+    pub height:           i32,
+    pub infinite:         bool,
+    pub layers:           Vec<Layer>,
+    pub next_layer_id:    i32,
+    pub next_object_id:   i32,
+    pub orientation:      Orientation,
+    pub properties:       Option<Vec<Property>>,
+    pub render_order:     RenderOrder,
+    pub stagger_axis:     StaggerAxis,
+    pub stagger_index:    StaggerIndex,
+    pub tiled_version:    String,
+    pub tile_height:      i32,
+    pub tile_sets:        Vec<Tileset>,
+    pub tile_width:       i32,
     #[serde(rename = "type")]
-    map_type:         MapType,
-    version:          serde_json::Number,
-    width:            i32,
+    pub map_type:         MapType,
+    #[serde(deserialize_with = "utils::deserialize_value_to_string")]
+    pub version:          String,
+    pub width:            i32,
 }

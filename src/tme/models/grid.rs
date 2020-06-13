@@ -6,7 +6,7 @@ use super::orientation::Orientation;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub struct Grid {
-    height:      i32,
-    orientation: Orientation,
-    width:       i32,
+    pub height:      i32,
+    pub orientation: Orientation,
+    pub width:       i32,
 }

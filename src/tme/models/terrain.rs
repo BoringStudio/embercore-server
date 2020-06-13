@@ -6,7 +6,7 @@ use super::property::Property;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub struct Terrain {
-    name:       String,
-    properties: Option<Vec<Property>>,
-    tile:       i32,
+    pub name:       String,
+    pub properties: Option<Vec<Property>>,
+    pub tile:       i32,
 }
