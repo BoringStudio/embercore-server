@@ -56,18 +56,17 @@ mod tests {
                     "data": "qweasdzxcQWEASDZXC"
                 }
             "#
-            .to_string()
-            .replace(' ', "")
-            .replace('\n', ""),
+            .to_string(),
             r#"
                 {
                     "data": [0, 0, 1, 0, 1]
                 }
             "#
-            .to_string()
-            .replace(' ', "")
-            .replace('\n', ""),
-        ];
+            .to_string(),
+        ]
+        .into_iter()
+        .map(|s| s.replace(' ', "").replace('\n', ""))
+        .collect();
     }
 
     #[test]
