@@ -20,27 +20,51 @@ mod tests {
     use lazy_static::*;
 
     lazy_static! {
-        static ref DE_CHUNKS_STR: String = String::from(
+        static ref DE_CHUNKS_STR: String = r#"
+            [
+                {
+                    "data": "qweasdzxcQWEASDZXC",
+                    "height": 15,
+                    "width": 22,
+                    "x": 7,
+                    "y": 8
+                },
+                {
+                    "data": [0, 0, 1, 0, 1],
+                    "height": 99,
+                    "width": 88,
+                    "x": 77,
+                    "y": 66
+                }
+            ]
+        "#
+        .to_string();
+        static ref SER_CHUNKS_STR: Vec<String> = vec![
             r#"
-                [
-                    {
-                        "data": "qweasdzxcQWEASDZXC",
-                        "height": 15,
-                        "width": 22,
-                        "x": 7,
-                        "y": 8
-                    },
-                    {
-                        "data": [0, 0, 1, 0, 1],
-                        "height": 99,
-                        "width": 88,
-                        "x": 77,
-                        "y": 66
-                    }
-                ]
+                {
+                    "data": "qweasdzxcQWEASDZXC",
+                    "height": 15,
+                    "width": 22,
+                    "x": 7,
+                    "y": 8
+                }
             "#
-        )
-        .replace(' ', "");
+            .to_string()
+            .replace(' ', "")
+            .replace('\n', ""),
+            r#"
+                {
+                    "data": [0, 0, 1, 0, 1],
+                    "height": 99,
+                    "width": 88,
+                    "x": 77,
+                    "y": 66
+                }
+            "#
+            .to_string()
+            .replace(' ', "")
+            .replace('\n', ""),
+        ];
     }
 
     #[test]
@@ -62,6 +86,34 @@ mod tests {
                 x:      77,
                 y:      66,
             },
+        ];
+
+        for (actual, expected) in actuals.into_iter().zip(expecteds) {
+            assert_eq!(actual, expected);
+        }
+    }
+
+    #[test]
+    fn serialize_chunk() {
+        let expecteds: Vec<String> = SER_CHUNKS_STR.to_vec();
+
+        let actuals: Vec<String> = vec![
+            serde_json::to_string(&Chunk {
+                data:   Encoded("qweasdzxcQWEASDZXC".to_owned()),
+                height: 15,
+                width:  22,
+                x:      7,
+                y:      8,
+            })
+            .unwrap(),
+            serde_json::to_string(&Chunk {
+                data:   Raw(vec![0, 0, 1, 0, 1]),
+                height: 99,
+                width:  88,
+                x:      77,
+                y:      66,
+            })
+            .unwrap(),
         ];
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
