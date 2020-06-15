@@ -49,9 +49,7 @@ mod tests {
                     "y": 8
                 }
             "#
-            .to_string()
-            .replace(' ', "")
-            .replace('\n', ""),
+            .to_string(),
             r#"
                 {
                     "data": [0, 0, 1, 0, 1],
@@ -61,10 +59,11 @@ mod tests {
                     "y": 66
                 }
             "#
-            .to_string()
-            .replace(' ', "")
-            .replace('\n', ""),
-        ];
+            .to_string(),
+        ]
+        .into_iter()
+        .map(|s| s.replace(' ', "").replace('\n', ""))
+        .collect();
     }
 
     #[test]
