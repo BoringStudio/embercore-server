@@ -3,10 +3,10 @@ use serde::Serialize;
 
 use crate::tme::color::Color;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum Property {
-    Int { name: String, value: i32 },
+    Int { name: String, value: i64 },
     Bool { name: String, value: bool },
     File { name: String, value: String },
     Color { name: String, value: Color },

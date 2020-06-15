@@ -18,25 +18,36 @@ use crate::tme::color::Color;
 #[serde(rename_all = "lowercase")]
 pub struct HexagonalMap {
     #[serde(with = "opt_color_serde")]
+    #[serde(rename = "backgroundcolor")]
     pub background_color: Option<Color>,
-    pub height:           i32,
-    pub hex_side_length:  i32,
+    pub height:           i64,
+    #[serde(rename = "hexsidelength")]
+    pub hex_side_length:  i64,
     pub infinite:         bool,
     pub layers:           Vec<Layer>,
-    pub next_layer_id:    i32,
-    pub next_object_id:   i32,
+    #[serde(rename = "nextlayerid")]
+    pub next_layer_id:    i64,
+    #[serde(rename = "nextobjectid")]
+    pub next_object_id:   i64,
     pub orientation:      Orientation,
     pub properties:       Option<Vec<Property>>,
+    #[serde(rename = "renderorder")]
     pub render_order:     RenderOrder,
+    #[serde(rename = "staggeraxis")]
     pub stagger_axis:     StaggerAxis,
+    #[serde(rename = "staggerindex")]
     pub stagger_index:    StaggerIndex,
+    #[serde(rename = "tiledversion")]
     pub tiled_version:    String,
-    pub tile_height:      i32,
+    #[serde(rename = "tileheight")]
+    pub tile_height:      i64,
+    #[serde(rename = "tilesets")]
     pub tile_sets:        Vec<Tileset>,
-    pub tile_width:       i32,
+    #[serde(rename = "tilewidth")]
+    pub tile_width:       i64,
     #[serde(rename = "type")]
     pub map_type:         MapType,
     #[serde(deserialize_with = "utils::deserialize_value_to_string")]
     pub version:          String,
-    pub width:            i32,
+    pub width:            i64,
 }

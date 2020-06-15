@@ -9,5 +9,5 @@ pub struct WangColor {
     pub color:       Color,
     pub name:        String,
     pub probability: f64,
-    pub tile:        i32,
+    pub tile:        i64,
 }

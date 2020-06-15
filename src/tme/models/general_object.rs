@@ -3,12 +3,12 @@ use serde::Serialize;
 
 use super::property::Property;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub struct GeneralObject {
-    pub gid:        Option<i32>,
+    pub gid:        Option<i64>,
     pub height:     f64,
-    pub id:         i32,
+    pub id:         i64,
     pub name:       String,
     pub properties: Option<Vec<Property>>,
     pub rotation:   f64,

@@ -9,12 +9,16 @@ use super::object_group_layer::ObjectGroupLayer;
 use super::tile_layer::TileLayer;
 use crate::tme::error;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase", tag = "type")]
 pub enum Layer {
+    #[serde(rename = "tilelayer")]
     TileLayer(TileLayer),
+    #[serde(rename = "objectgroup")]
     ObjectGroupLayer(ObjectGroupLayer),
+    #[serde(rename = "imagelayer")]
     ImageLayer(ImageLayer),
+    #[serde(rename = "group")]
     GroupLayer(GroupLayer),
 }
 
@@ -23,7 +27,6 @@ pub enum Layer {
 pub enum Compression {
     Zlib,
     Gzip,
-    Empty,
 }
 
 impl FromStr for Compression {
@@ -33,7 +36,6 @@ impl FromStr for Compression {
         match s {
             "zlib" => Ok(Compression::Zlib),
             "gzip" => Ok(Compression::Gzip),
-            "" => Ok(Compression::Empty),
             _ => error::ParseCompression { s: s.to_owned() }.fail(),
         }
     }

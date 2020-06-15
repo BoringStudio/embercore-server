@@ -61,4 +61,9 @@ pub enum Error {
         backtrace: Backtrace,
         s:         String,
     },
+    #[snafu(display("Unable parse data from string: {}", s))]
+    ParseDataSource {
+        backtrace: Backtrace,
+        s:         String,
+    },
 }

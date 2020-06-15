@@ -9,7 +9,7 @@ use super::polyline_object::PolylineObject;
 use super::rectangle_object::RectangleObject;
 use super::text_object::TextObject;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase", untagged)]
 pub enum Object {
     General(GeneralObject),

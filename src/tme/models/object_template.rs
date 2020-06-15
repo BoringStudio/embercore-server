@@ -21,6 +21,6 @@ pub enum ObjectTemplateType {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub struct ExternalTileset {
-    pub first_gid: i32,
+    pub first_gid: i64,
     pub source:    String,
 }

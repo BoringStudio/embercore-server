@@ -1,9 +1,21 @@
 use serde::Deserialize;
 use serde::Serialize;
 
-#[derive(Debug, Serialize, Deserialize)]
+use std::str::FromStr;
+
+use crate::tme::error;
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum DataSource {
-    Array(Vec<i32>),
-    Base64(String),
+    Raw(Vec<i64>),
+    Encoded(String),
+}
+
+impl FromStr for DataSource {
+    type Err = error::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(DataSource::Encoded(s.to_owned()))
+    }
 }

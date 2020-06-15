@@ -10,8 +10,8 @@ use super::staggered_map::StaggeredMap;
 
 use crate::tme::error;
 
-#[derive(Debug, Serialize)]
-#[serde(tag = "orientation")]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "orientation", rename_all = "lowercase")]
 pub enum Map {
     Orthogonal(OrthogonalMap),
     Isometric(IsometricMap),
