@@ -19,39 +19,39 @@ pub enum Property {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct IntProperty {
-    name:  String,
-    value: i64,
+    pub name:  String,
+    pub value: i64,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct BoolProperty {
-    name:  String,
-    value: bool,
+    pub name:  String,
+    pub value: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct FileProperty {
-    name:  String,
-    value: PathBuf,
+    pub name:  String,
+    pub value: PathBuf,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct ColorProperty {
-    name:  String,
+    pub name:  String,
     #[serde(with = "color_serde")]
-    value: Color,
+    pub value: Color,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct FloatProperty {
-    name:  String,
-    value: f64,
+    pub name:  String,
+    pub value: f64,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct StringProperty {
-    name:  String,
-    value: String,
+    pub name:  String,
+    pub value: String,
 }
 
 #[cfg(test)]
@@ -59,10 +59,9 @@ mod tests {
     use super::*;
 
     use lazy_static::*;
-    use std::path::Path;
 
     lazy_static! {
-        static ref DE_PROPERTY_STR: String = r#"
+        static ref DE_PROPERTIES_STR: String = r#"
             [
                 {
                     "type": "int",
@@ -97,7 +96,7 @@ mod tests {
             ]
         "#
         .to_string();
-        static ref SER_PROPERTY_STR: Vec<String> = vec![
+        static ref SER_PROPERTIES_STR: Vec<String> = vec![
             r#"
                 {
                     "type": "int",
@@ -154,7 +153,7 @@ mod tests {
 
     #[test]
     fn deserialize_property() {
-        let actuals: Vec<Property> = serde_json::from_str(DE_PROPERTY_STR.as_str()).unwrap();
+        let actuals: Vec<Property> = serde_json::from_str(DE_PROPERTIES_STR.as_str()).unwrap();
 
         let expecteds: Vec<Property> = vec![
             Property::Int(IntProperty {
@@ -190,7 +189,7 @@ mod tests {
 
     #[test]
     fn serialize_property() {
-        let expecteds: Vec<String> = SER_PROPERTY_STR.to_vec();
+        let expecteds: Vec<String> = SER_PROPERTIES_STR.to_vec();
 
         let actuals: Vec<String> = vec![
             serde_json::to_string(&Property::Int(IntProperty {
