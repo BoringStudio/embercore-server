@@ -15,10 +15,11 @@ pub struct Grid {
 mod tests {
     use super::*;
 
-    use lazy_static::*;
+    use serde_json::json;
 
-    lazy_static! {
-        static ref DE_GRIDS_STR: String = r#"
+    #[test]
+    fn deserialize_grid() {
+        let actuals: Vec<Grid> = serde_json::from_value(json! {
             [
                 {
                     "height": 666,
@@ -41,50 +42,8 @@ mod tests {
                     "width": 777
                 }
             ]
-        "#
-        .to_string();
-        static ref SER_GRIDS_STR: Vec<String> = vec![
-            r#"
-                {
-                    "height": 666,
-                    "orientation": "orthogonal",
-                    "width": 777
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "height": 666,
-                    "orientation": "isometric",
-                    "width": 777
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "height": 666,
-                    "orientation": "staggered",
-                    "width": 777
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "height": 666,
-                    "orientation": "hexagonal",
-                    "width": 777
-                }
-            "#
-            .to_string(),
-        ]
-        .into_iter()
-        .map(|s| s.replace(' ', "").replace('\n', ""))
-        .collect();
-    }
-
-    #[test]
-    fn deserialize_grid() {
-        let actuals: Vec<Grid> = serde_json::from_str(DE_GRIDS_STR.as_str()).unwrap();
+        })
+        .unwrap();
 
         let expecteds: Vec<Grid> = vec![
             Grid {
@@ -116,34 +75,65 @@ mod tests {
 
     #[test]
     fn serialize_grid() {
-        let expecteds: Vec<String> = SER_GRIDS_STR.to_vec();
+        let expecteds: Vec<String> = vec![
+            json! {
+                {
+                    "height": 666,
+                    "orientation": "orthogonal",
+                    "width": 777
+                }
+            },
+            json! {
+                {
+                    "height": 666,
+                    "orientation": "isometric",
+                    "width": 777
+                }
+            },
+            json! {
+                {
+                    "height": 666,
+                    "orientation": "staggered",
+                    "width": 777
+                }
+            },
+            json! {
+                {
+                    "height": 666,
+                    "orientation": "hexagonal",
+                    "width": 777
+                }
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         let actuals: Vec<String> = vec![
-            serde_json::to_string(&Grid {
+            Grid {
                 height:      666,
                 orientation: Orientation::Orthogonal,
                 width:       777,
-            })
-            .unwrap(),
-            serde_json::to_string(&Grid {
+            },
+            Grid {
                 height:      666,
                 orientation: Orientation::Isometric,
                 width:       777,
-            })
-            .unwrap(),
-            serde_json::to_string(&Grid {
+            },
+            Grid {
                 height:      666,
                 orientation: Orientation::Staggered,
                 width:       777,
-            })
-            .unwrap(),
-            serde_json::to_string(&Grid {
+            },
+            Grid {
                 height:      666,
                 orientation: Orientation::Hexagonal,
                 width:       777,
-            })
-            .unwrap(),
-        ];
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);

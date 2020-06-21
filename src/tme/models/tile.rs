@@ -23,20 +23,3 @@ pub struct Tile {
     #[serde(rename = "type")]
     pub tile_type:    Option<String>,
 }
-
-impl Tile {
-    pub fn new(id: i64) -> Self {
-        Self {
-            animation: None,
-            id,
-            image: None,
-            image_height: None,
-            image_width: None,
-            object_group: None,
-            probability: None,
-            properties: None,
-            terrain: None,
-            tile_type: None,
-        }
-    }
-}

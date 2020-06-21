@@ -12,10 +12,11 @@ pub struct Point {
 mod tests {
     use super::*;
 
-    use lazy_static::*;
+    use serde_json::json;
 
-    lazy_static! {
-        static ref DE_POINTS_STR: String = r#"
+    #[test]
+    fn deserialize_point() {
+        let actuals: Vec<Point> = serde_json::from_value(json! {
             [
                 {
                     "x": 7.7,
@@ -26,32 +27,8 @@ mod tests {
                     "y": 66.66
                 }
             ]
-        "#
-        .to_string();
-        static ref SER_POINTS_STR: Vec<String> = vec![
-            r#"
-                {
-                    "x": 7.7,
-                    "y": 8.8
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "x": 77.77,
-                    "y": 66.66
-                }
-            "#
-            .to_string(),
-        ]
-        .into_iter()
-        .map(|s| s.replace(' ', "").replace('\n', ""))
-        .collect();
-    }
-
-    #[test]
-    fn deserialize_point() {
-        let actuals: Vec<Point> = serde_json::from_str(DE_POINTS_STR.as_str()).unwrap();
+        })
+        .unwrap();
 
         let expecteds: Vec<Point> = vec![Point { x: 7.7, y: 8.8 }, Point { x: 77.77, y: 66.66 }];
 
@@ -62,12 +39,28 @@ mod tests {
 
     #[test]
     fn serialize_point() {
-        let expecteds: Vec<String> = SER_POINTS_STR.to_vec();
+        let expecteds: Vec<String> = vec![
+            json! {
+                {
+                    "x": 7.7,
+                    "y": 8.8
+                }
+            },
+            json! {
+                {
+                    "x": 77.77,
+                    "y": 66.66
+                }
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
-        let actuals: Vec<String> = vec![
-            serde_json::to_string(&Point { x: 7.7, y: 8.8 }).unwrap(),
-            serde_json::to_string(&Point { x: 77.77, y: 66.66 }).unwrap(),
-        ];
+        let actuals: Vec<String> = vec![Point { x: 7.7, y: 8.8 }, Point { x: 77.77, y: 66.66 }]
+            .into_iter()
+            .map(|v| serde_json::to_string(&v).unwrap())
+            .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);

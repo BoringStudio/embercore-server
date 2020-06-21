@@ -33,7 +33,7 @@ mod tests {
     use super::*;
 
     use super::Orientation::{Hexagonal, Isometric, Orthogonal, Staggered};
-    use lazy_static::*;
+    use serde_json::json;
 
     #[derive(Debug, Deserialize, Serialize, PartialEq)]
     struct Wrapper {
@@ -46,8 +46,9 @@ mod tests {
         }
     }
 
-    lazy_static! {
-        static ref DE_ORIENTATION_STR: String = r#"
+    #[test]
+    fn deserialize_orientation() {
+        let actuals: Vec<Wrapper> = serde_json::from_value(json! {
             [
                 {
                     "orientation": "orthogonal"
@@ -62,42 +63,8 @@ mod tests {
                     "orientation": "hexagonal"
                 }
             ]
-        "#
-        .to_string();
-        static ref SER_ORIENTATION_STR: Vec<String> = vec![
-            r#"
-                {
-                    "orientation": "orthogonal"
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "orientation": "isometric"
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "orientation": "staggered"
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "orientation": "hexagonal"
-                }
-            "#
-            .to_string(),
-        ]
-        .into_iter()
-        .map(|s| s.replace(' ', "").replace('\n', ""))
-        .collect();
-    }
-
-    #[test]
-    fn deserialize_orientation() {
-        let actuals: Vec<Wrapper> = serde_json::from_str(DE_ORIENTATION_STR.as_str()).unwrap();
+        })
+        .unwrap();
 
         let expecteds: Vec<Wrapper> = vec![
             Wrapper::new(Orthogonal),
@@ -113,14 +80,41 @@ mod tests {
 
     #[test]
     fn serialize_orientation() {
-        let expecteds: Vec<String> = SER_ORIENTATION_STR.to_vec();
+        let expecteds: Vec<String> = vec![
+            json! {
+                {
+                    "orientation": "orthogonal"
+                }
+            },
+            json! {
+                {
+                    "orientation": "isometric"
+                }
+            },
+            json! {
+                {
+                    "orientation": "staggered"
+                }
+            },
+            json! {
+                {
+                    "orientation": "hexagonal"
+                }
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         let actuals: Vec<String> = vec![
-            serde_json::to_string(&Wrapper::new(Orthogonal)).unwrap(),
-            serde_json::to_string(&Wrapper::new(Isometric)).unwrap(),
-            serde_json::to_string(&Wrapper::new(Staggered)).unwrap(),
-            serde_json::to_string(&Wrapper::new(Hexagonal)).unwrap(),
-        ];
+            Wrapper::new(Orthogonal),
+            Wrapper::new(Isometric),
+            Wrapper::new(Staggered),
+            Wrapper::new(Hexagonal),
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);

@@ -33,6 +33,7 @@ uuid = { version = "0.8", features = ["v4", "serde"] }
 
 [dev-dependencies]
 lazy_static = "1.4.0"
+serde_json = { version = "1", features = ["preserve_order"] }
 
 [workspace]
 members = ["test-client"]

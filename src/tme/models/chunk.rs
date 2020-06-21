@@ -17,10 +17,11 @@ mod tests {
     use super::*;
 
     use crate::tme::models::data_source::DataSource::{Encoded, Raw};
-    use lazy_static::*;
+    use serde_json::json;
 
-    lazy_static! {
-        static ref DE_CHUNKS_STR: String = r#"
+    #[test]
+    fn deserialize_chunk() {
+        let actuals: Vec<Chunk> = serde_json::from_value(json! {
             [
                 {
                     "data": "qweasdzxcQWEASDZXC",
@@ -37,38 +38,8 @@ mod tests {
                     "y": 66
                 }
             ]
-        "#
-        .to_string();
-        static ref SER_CHUNKS_STR: Vec<String> = vec![
-            r#"
-                {
-                    "data": "qweasdzxcQWEASDZXC",
-                    "height": 15,
-                    "width": 22,
-                    "x": 7,
-                    "y": 8
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "data": [0, 0, 1, 0, 1],
-                    "height": 99,
-                    "width": 88,
-                    "x": 77,
-                    "y": 66
-                }
-            "#
-            .to_string(),
-        ]
-        .into_iter()
-        .map(|s| s.replace(' ', "").replace('\n', ""))
-        .collect();
-    }
-
-    #[test]
-    fn deserialize_chunk() {
-        let actuals: Vec<Chunk> = serde_json::from_str(DE_CHUNKS_STR.as_str()).unwrap();
+        })
+        .unwrap();
 
         let expecteds: Vec<Chunk> = vec![
             Chunk {
@@ -94,26 +65,49 @@ mod tests {
 
     #[test]
     fn serialize_chunk() {
-        let expecteds: Vec<String> = SER_CHUNKS_STR.to_vec();
+        let expecteds: Vec<String> = vec![
+            json! {
+                {
+                    "data": "qweasdzxcQWEASDZXC",
+                    "height": 15,
+                    "width": 22,
+                    "x": 7,
+                    "y": 8
+                }
+            },
+            json! {
+                {
+                    "data": [0, 0, 1, 0, 1],
+                    "height": 99,
+                    "width": 88,
+                    "x": 77,
+                    "y": 66
+                }
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         let actuals: Vec<String> = vec![
-            serde_json::to_string(&Chunk {
+            Chunk {
                 data:   Encoded("qweasdzxcQWEASDZXC".to_owned()),
                 height: 15,
                 width:  22,
                 x:      7,
                 y:      8,
-            })
-            .unwrap(),
-            serde_json::to_string(&Chunk {
+            },
+            Chunk {
                 data:   Raw(vec![0, 0, 1, 0, 1]),
                 height: 99,
                 width:  88,
                 x:      77,
                 y:      66,
-            })
-            .unwrap(),
-        ];
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);

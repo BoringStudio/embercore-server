@@ -58,10 +58,11 @@ pub struct StringProperty {
 mod tests {
     use super::*;
 
-    use lazy_static::*;
+    use serde_json::json;
 
-    lazy_static! {
-        static ref DE_PROPERTIES_STR: String = r#"
+    #[test]
+    fn deserialize_property() {
+        let actuals: Vec<Property> = serde_json::from_value(json! {
             [
                 {
                     "type": "int",
@@ -94,66 +95,8 @@ mod tests {
                     "value": "onestoldme"
                 }
             ]
-        "#
-        .to_string();
-        static ref SER_PROPERTIES_STR: Vec<String> = vec![
-            r#"
-                {
-                    "type": "int",
-                    "name": "somebody",
-                    "value": 42
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "type": "bool",
-                    "name": "somebody",
-                    "value": true
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "type": "file",
-                    "name": "somebody",
-                    "value": "/dev/null"
-                }
-            "#
-            .to_string(),
-            r##"
-                {
-                    "type": "color",
-                    "name": "somebody",
-                    "value": "#FF00FFAA"
-                }
-            "##
-            .to_string(),
-            r#"
-                {
-                    "type": "float",
-                    "name": "somebody",
-                    "value": 42.42
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "type": "string",
-                    "name": "somebody",
-                    "value": "onestoldme"
-                }
-            "#
-            .to_string(),
-        ]
-        .into_iter()
-        .map(|s| s.replace(' ', "").replace('\n', ""))
-        .collect();
-    }
-
-    #[test]
-    fn deserialize_property() {
-        let actuals: Vec<Property> = serde_json::from_str(DE_PROPERTIES_STR.as_str()).unwrap();
+        })
+        .unwrap();
 
         let expecteds: Vec<Property> = vec![
             Property::Int(IntProperty {
@@ -189,40 +132,83 @@ mod tests {
 
     #[test]
     fn serialize_property() {
-        let expecteds: Vec<String> = SER_PROPERTIES_STR.to_vec();
+        let expecteds: Vec<String> = vec![
+            json! {
+                {
+                    "type": "int",
+                    "name": "somebody",
+                    "value": 42
+                }
+            },
+            json! {
+                {
+                    "type": "bool",
+                    "name": "somebody",
+                    "value": true
+                }
+            },
+            json! {
+                {
+                    "type": "file",
+                    "name": "somebody",
+                    "value": "/dev/null"
+                }
+            },
+            json! {
+                {
+                    "type": "color",
+                    "name": "somebody",
+                    "value": "#FF00FFAA"
+                }
+            },
+            json! {
+                {
+                    "type": "float",
+                    "name": "somebody",
+                    "value": 42.42
+                }
+            },
+            json! {
+                {
+                    "type": "string",
+                    "name": "somebody",
+                    "value": "onestoldme"
+                }
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         let actuals: Vec<String> = vec![
-            serde_json::to_string(&Property::Int(IntProperty {
+            Property::Int(IntProperty {
                 name:  "somebody".to_owned(),
                 value: 42,
-            }))
-            .unwrap(),
-            serde_json::to_string(&Property::Bool(BoolProperty {
+            }),
+            Property::Bool(BoolProperty {
                 name:  "somebody".to_owned(),
                 value: true,
-            }))
-            .unwrap(),
-            serde_json::to_string(&Property::File(FileProperty {
+            }),
+            Property::File(FileProperty {
                 name:  "somebody".to_owned(),
                 value: PathBuf::from("/dev/null"),
-            }))
-            .unwrap(),
-            serde_json::to_string(&Property::Color(ColorProperty {
+            }),
+            Property::Color(ColorProperty {
                 name:  "somebody".to_owned(),
                 value: Color::new(0x00, 0xFF, 0xAA),
-            }))
-            .unwrap(),
-            serde_json::to_string(&Property::Float(FloatProperty {
+            }),
+            Property::Float(FloatProperty {
                 name:  "somebody".to_owned(),
                 value: 42.42,
-            }))
-            .unwrap(),
-            serde_json::to_string(&Property::String(StringProperty {
+            }),
+            Property::String(StringProperty {
                 name:  "somebody".to_owned(),
                 value: "onestoldme".to_owned(),
-            }))
-            .unwrap(),
-        ];
+            }),
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);

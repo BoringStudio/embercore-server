@@ -48,10 +48,11 @@ pub enum VerticalAlign {
 mod tests {
     use super::*;
 
-    use lazy_static::*;
+    use serde_json::json;
 
-    lazy_static! {
-        static ref DE_TEXT_STR: String = r##"
+    #[test]
+    fn deserialize_terrain() {
+        let actuals: Vec<Text> = serde_json::from_value(json! {
             [
                 {
                     "bold":       false,
@@ -110,86 +111,8 @@ mod tests {
                     "wrap":       true
                 }
             ]
-        "##
-        .to_string();
-        static ref SER_TEXT_STR: Vec<String> = vec![
-            r##"
-                {
-                    "bold":       false,
-                    "color":      "#FFFFAABB",
-                    "fontfamily": "Arial",
-                    "halign":     "center",
-                    "italic":     false,
-                    "kerning":    false,
-                    "pixelsize":  26,
-                    "strikeout":  true,
-                    "text":       "somebody",
-                    "underline":  true,
-                    "valign":     "center",
-                    "wrap":       true
-                }
-            "##
-            .to_string(),
-            r##"
-                {
-                    "bold":       false,
-                    "color":      "#FFFFAABB",
-                    "fontfamily": "Arial",
-                    "halign":     "right",
-                    "italic":     false,
-                    "kerning":    false,
-                    "pixelsize":  26,
-                    "strikeout":  true,
-                    "text":       "somebody",
-                    "underline":  true,
-                    "valign":     "bottom",
-                    "wrap":       true
-                }
-            "##
-            .to_string(),
-            r##"
-                {
-                    "bold":       false,
-                    "color":      "#FFFFAABB",
-                    "fontfamily": "Arial",
-                    "halign":     "justify",
-                    "italic":     false,
-                    "kerning":    false,
-                    "pixelsize":  26,
-                    "strikeout":  true,
-                    "text":       "somebody",
-                    "underline":  true,
-                    "valign":     "top",
-                    "wrap":       true
-                }
-            "##
-            .to_string(),
-            r##"
-                {
-                    "bold":       false,
-                    "color":      "#FFFFAABB",
-                    "fontfamily": "Arial",
-                    "halign":     "left",
-                    "italic":     false,
-                    "kerning":    false,
-                    "pixelsize":  26,
-                    "strikeout":  true,
-                    "text":       "somebody",
-                    "underline":  true,
-                    "valign":     "top",
-                    "wrap":       true
-                }
-            "##
-            .to_string(),
-        ]
-        .into_iter()
-        .map(|s| s.replace(' ', "").replace('\n', ""))
-        .collect();
-    }
-
-    #[test]
-    fn deserialize_terrain() {
-        let actuals: Vec<Text> = serde_json::from_str(DE_TEXT_STR.as_str()).unwrap();
+        })
+        .unwrap();
 
         let expecteds: Vec<Text> = vec![
             Text {
@@ -257,10 +180,78 @@ mod tests {
 
     #[test]
     fn serialize_terrain() {
-        let expecteds: Vec<String> = SER_TEXT_STR.to_vec();
+        let expecteds: Vec<String> = vec![
+            json! {
+                {
+                    "bold":       false,
+                    "color":      "#FFFFAABB",
+                    "fontfamily": "Arial",
+                    "halign":     "center",
+                    "italic":     false,
+                    "kerning":    false,
+                    "pixelsize":  26,
+                    "strikeout":  true,
+                    "text":       "somebody",
+                    "underline":  true,
+                    "valign":     "center",
+                    "wrap":       true
+                }
+            },
+            json! {
+                {
+                    "bold":       false,
+                    "color":      "#FFFFAABB",
+                    "fontfamily": "Arial",
+                    "halign":     "right",
+                    "italic":     false,
+                    "kerning":    false,
+                    "pixelsize":  26,
+                    "strikeout":  true,
+                    "text":       "somebody",
+                    "underline":  true,
+                    "valign":     "bottom",
+                    "wrap":       true
+                }
+            },
+            json! {
+                {
+                    "bold":       false,
+                    "color":      "#FFFFAABB",
+                    "fontfamily": "Arial",
+                    "halign":     "justify",
+                    "italic":     false,
+                    "kerning":    false,
+                    "pixelsize":  26,
+                    "strikeout":  true,
+                    "text":       "somebody",
+                    "underline":  true,
+                    "valign":     "top",
+                    "wrap":       true
+                }
+            },
+            json! {
+                {
+                    "bold":       false,
+                    "color":      "#FFFFAABB",
+                    "fontfamily": "Arial",
+                    "halign":     "left",
+                    "italic":     false,
+                    "kerning":    false,
+                    "pixelsize":  26,
+                    "strikeout":  true,
+                    "text":       "somebody",
+                    "underline":  true,
+                    "valign":     "top",
+                    "wrap":       true
+                }
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         let actuals: Vec<String> = vec![
-            serde_json::to_string(&Text {
+            Text {
                 bold:        false,
                 color:       Color::new(0xFF, 0xAA, 0xBB),
                 font_family: "Arial".to_string(),
@@ -273,9 +264,8 @@ mod tests {
                 underline:   true,
                 v_align:     VerticalAlign::Center,
                 wrap:        true,
-            })
-            .unwrap(),
-            serde_json::to_string(&Text {
+            },
+            Text {
                 bold:        false,
                 color:       Color::new(0xFF, 0xAA, 0xBB),
                 font_family: "Arial".to_string(),
@@ -288,9 +278,8 @@ mod tests {
                 underline:   true,
                 v_align:     VerticalAlign::Bottom,
                 wrap:        true,
-            })
-            .unwrap(),
-            serde_json::to_string(&Text {
+            },
+            Text {
                 bold:        false,
                 color:       Color::new(0xFF, 0xAA, 0xBB),
                 font_family: "Arial".to_string(),
@@ -303,9 +292,8 @@ mod tests {
                 underline:   true,
                 v_align:     VerticalAlign::Top,
                 wrap:        true,
-            })
-            .unwrap(),
-            serde_json::to_string(&Text {
+            },
+            Text {
                 bold:        false,
                 color:       Color::new(0xFF, 0xAA, 0xBB),
                 font_family: "Arial".to_string(),
@@ -318,9 +306,11 @@ mod tests {
                 underline:   true,
                 v_align:     VerticalAlign::Top,
                 wrap:        true,
-            })
-            .unwrap(),
-        ];
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);

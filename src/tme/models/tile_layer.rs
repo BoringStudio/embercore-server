@@ -38,8 +38,6 @@ mod tests {
     use super::*;
 
     use crate::tme::models::data_source::DataSource::{Encoded, Raw};
-    use crate::tme::models::layer::Layer;
-    use crate::tme::models::tile::Tile;
     use serde_json::json;
 
     #[test]
@@ -278,7 +276,7 @@ mod tests {
     #[test]
     fn serialize_tile_layer() {
         let expecteds: Vec<String> = vec![
-            serde_json::to_string(&json! {
+            json! {
                 {
                     "chunks": null,
                     "compression": null,
@@ -298,9 +296,8 @@ mod tests {
                     "x":0,
                     "y":0
                 }
-            })
-            .unwrap(),
-            serde_json::to_string(&json! {
+            },
+            json! {
                 {
                     "chunks": null,
                     "compression": null,
@@ -320,9 +317,8 @@ mod tests {
                     "x":0,
                     "y":0
                 }
-            })
-            .unwrap(),
-            serde_json::to_string(&json! {
+            },
+            json! {
                 {
                     "chunks": [
                     {
@@ -357,9 +353,8 @@ mod tests {
                     "x":0,
                     "y":0
                 }
-            })
-            .unwrap(),
-            serde_json::to_string(&json! {
+            },
+            json! {
                 {
                     "chunks": null,
                     "compression": "zlib",
@@ -379,9 +374,8 @@ mod tests {
                     "x":0,
                     "y":0
                 }
-            })
-            .unwrap(),
-            serde_json::to_string(&json! {
+            },
+            json! {
                 {
                     "chunks": null,
                     "compression": "gzip",
@@ -401,12 +395,14 @@ mod tests {
                     "x":0,
                     "y":0
                 }
-            })
-            .unwrap(),
-        ];
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         let actuals: Vec<String> = vec![
-            serde_json::to_string(&TileLayer {
+            TileLayer {
                 chunks:      None,
                 compression: None,
                 data:        Raw(vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
@@ -424,9 +420,8 @@ mod tests {
                 width:       100,
                 x:           0,
                 y:           0,
-            })
-            .unwrap(),
-            serde_json::to_string(&TileLayer {
+            },
+            TileLayer {
                 chunks:      None,
                 compression: None,
                 data:        Encoded(
@@ -446,9 +441,8 @@ mod tests {
                 width:       100,
                 x:           0,
                 y:           0,
-            })
-            .unwrap(),
-            serde_json::to_string(&TileLayer {
+            },
+            TileLayer {
                 chunks:      Some(vec![
                     Chunk {
                         data:   Raw(vec![1, 1, 0, 1]),
@@ -483,9 +477,8 @@ mod tests {
                 width:       100,
                 x:           0,
                 y:           0,
-            })
-            .unwrap(),
-            serde_json::to_string(&TileLayer {
+            },
+            TileLayer {
                 chunks:      None,
                 compression: Some(Compression::Zlib),
                 data:        Encoded("eNrzdS5P9yUFO9raAgDo2RIx".to_owned()),
@@ -503,9 +496,8 @@ mod tests {
                 width:       100,
                 x:           0,
                 y:           0,
-            })
-            .unwrap(),
-            serde_json::to_string(&TileLayer {
+            },
+            TileLayer {
                 chunks:      None,
                 compression: Some(Compression::Gzip),
                 data:        Encoded("H4sIAAAAAAAA//N1Lk/3JQU72toCAHCxT1Y0AAAA".to_owned()),
@@ -523,9 +515,11 @@ mod tests {
                 width:       100,
                 x:           0,
                 y:           0,
-            })
-            .unwrap(),
-        ];
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);

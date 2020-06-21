@@ -25,7 +25,7 @@ mod tests {
     use super::*;
 
     use crate::tme::models::data_source::DataSource::{Encoded, Raw};
-    use lazy_static::*;
+    use serde_json::json;
 
     #[derive(Debug, Deserialize, Serialize, PartialEq)]
     struct Wrapper {
@@ -38,8 +38,9 @@ mod tests {
         }
     }
 
-    lazy_static! {
-        static ref DE_DATA_SOURCE_STR: String = r#"
+    #[test]
+    fn deserialize_data_source() {
+        let actuals: Vec<Wrapper> = serde_json::from_value(json! {
             [
                 {
                     "data": "qweasdzxcQWEASDZXC"
@@ -48,30 +49,8 @@ mod tests {
                     "data": [0, 0, 1, 0, 1]
                 }
             ]
-        "#
-        .to_string();
-        static ref SER_DATA_SOURCE_STR: Vec<String> = vec![
-            r#"
-                {
-                    "data": "qweasdzxcQWEASDZXC"
-                }
-            "#
-            .to_string(),
-            r#"
-                {
-                    "data": [0, 0, 1, 0, 1]
-                }
-            "#
-            .to_string(),
-        ]
-        .into_iter()
-        .map(|s| s.replace(' ', "").replace('\n', ""))
-        .collect();
-    }
-
-    #[test]
-    fn deserialize_data_source() {
-        let actuals: Vec<Wrapper> = serde_json::from_str(DE_DATA_SOURCE_STR.as_str()).unwrap();
+        })
+        .unwrap();
 
         let expecteds: Vec<Wrapper> = vec![
             Wrapper::new(Encoded("qweasdzxcQWEASDZXC".to_owned())),
@@ -85,12 +64,29 @@ mod tests {
 
     #[test]
     fn serialize_data_source() {
-        let expecteds: Vec<String> = SER_DATA_SOURCE_STR.to_vec();
+        let expecteds: Vec<String> = vec![
+            json! {
+                {
+                    "data": "qweasdzxcQWEASDZXC"
+                }
+            },
+            json! {
+                {
+                    "data": [0, 0, 1, 0, 1]
+                }
+            },
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         let actuals: Vec<String> = vec![
-            serde_json::to_string(&Wrapper::new(Encoded("qweasdzxcQWEASDZXC".to_owned()))).unwrap(),
-            serde_json::to_string(&Wrapper::new(Raw(vec![0, 0, 1, 0, 1]))).unwrap(),
-        ];
+            Wrapper::new(Encoded("qweasdzxcQWEASDZXC".to_owned())),
+            Wrapper::new(Raw(vec![0, 0, 1, 0, 1])),
+        ]
+        .into_iter()
+        .map(|v| serde_json::to_string(&v).unwrap())
+        .collect();
 
         for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);
