@@ -42,7 +42,7 @@ mod tests {
 
     #[test]
     fn deserialize_tile_layer() {
-        let expected_layers = vec![
+        let expecteds = vec![
             TileLayer {
                 chunks:      None,
                 compression: None,
@@ -159,7 +159,7 @@ mod tests {
             },
         ];
 
-        let actual_layers: Vec<TileLayer> = serde_json::from_value(json! {
+        let actuals: Vec<TileLayer> = serde_json::from_value(json! {
             [
                 {
                     "chunks": null,
@@ -268,7 +268,7 @@ mod tests {
         })
         .unwrap();
 
-        for (actual, expected) in actual_layers.into_iter().zip(expected_layers) {
+        for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);
         }
     }

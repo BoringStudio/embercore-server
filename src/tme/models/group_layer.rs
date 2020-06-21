@@ -38,7 +38,7 @@ mod tests {
 
     #[test]
     fn deserialize_tile_layer() {
-        let expected_layers = vec![
+        let expecteds = vec![
             GroupLayer {
                 id:         777,
                 layers:     vec![],
@@ -127,7 +127,7 @@ mod tests {
             },
         ];
 
-        let actual_layers: Vec<GroupLayer> = serde_json::from_value(json! {
+        let actuals: Vec<GroupLayer> = serde_json::from_value(json! {
             [
                 {
                     "id":         777,
@@ -217,7 +217,7 @@ mod tests {
         })
         .unwrap();
 
-        for (actual, expected) in actual_layers.into_iter().zip(expected_layers) {
+        for (actual, expected) in actuals.into_iter().zip(expecteds) {
             assert_eq!(actual, expected);
         }
     }
