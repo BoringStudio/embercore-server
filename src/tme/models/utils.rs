@@ -9,6 +9,10 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
 
+pub fn make_none_option<T>() -> Option<T> {
+    None
+}
+
 #[allow(dead_code)]
 pub fn deserialize_value_to_string<'de, D>(d: D) -> Result<String, D::Error>
 where

@@ -32,7 +32,6 @@ pub struct ImageLayer {
 mod tests {
     use super::*;
 
-    use crate::tme::models::data_source::DataSource::{Encoded, Raw};
     use serde_json::json;
 
     #[test]
