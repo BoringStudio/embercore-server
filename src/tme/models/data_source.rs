@@ -3,7 +3,7 @@ use serde::Serialize;
 
 use std::str::FromStr;
 
-use crate::tme::error;
+use crate::tme::error::Error;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
@@ -13,7 +13,7 @@ pub enum DataSource {
 }
 
 impl FromStr for DataSource {
-    type Err = error::Error;
+    type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(DataSource::Encoded(s.to_owned()))

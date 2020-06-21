@@ -1,3 +1,6 @@
+// TODO: remove this after stabilized backtrace
+#![feature(backtrace)]
+
 pub mod config;
 pub mod prelude;
 pub mod tme;
@@ -5,10 +8,7 @@ pub mod tme;
 use futures::prelude::*;
 use tokio::net::TcpListener;
 use tokio_serde::formats::SymmetricalBincode;
-use tokio_util::codec::{
-    FramedRead,
-    LengthDelimitedCodec,
-};
+use tokio_util::codec::{FramedRead, LengthDelimitedCodec};
 
 use embercore::*;
 

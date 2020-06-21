@@ -3,8 +3,7 @@ use std::str::FromStr;
 use serde::Deserialize;
 use serde::Serialize;
 
-use super::error;
-use crate::prelude::*;
+use super::error::Error;
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]
 pub struct Color {
@@ -35,7 +34,7 @@ impl Color {
 }
 
 impl FromStr for Color {
-    type Err = error::Error;
+    type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let s = if s.starts_with("#") { &s[1..] } else { s };
@@ -43,20 +42,20 @@ impl FromStr for Color {
         let (a, r, g, b) = match s.len() {
             6 => {
                 let a = u8::max_value();
-                let r = u8::from_str_radix(&s[0..2], 16).context(error::ParseColorComponent)?;
-                let g = u8::from_str_radix(&s[2..4], 16).context(error::ParseColorComponent)?;
-                let b = u8::from_str_radix(&s[4..6], 16).context(error::ParseColorComponent)?;
+                let r = u8::from_str_radix(&s[0..2], 16).map_err(Error::ParseColorComponent)?;
+                let g = u8::from_str_radix(&s[2..4], 16).map_err(Error::ParseColorComponent)?;
+                let b = u8::from_str_radix(&s[4..6], 16).map_err(Error::ParseColorComponent)?;
                 (a, r, g, b)
             }
             8 => {
-                let a = u8::from_str_radix(&s[0..2], 16).context(error::ParseColorComponent)?;
-                let r = u8::from_str_radix(&s[2..4], 16).context(error::ParseColorComponent)?;
-                let g = u8::from_str_radix(&s[4..6], 16).context(error::ParseColorComponent)?;
-                let b = u8::from_str_radix(&s[6..8], 16).context(error::ParseColorComponent)?;
+                let a = u8::from_str_radix(&s[0..2], 16).map_err(Error::ParseColorComponent)?;
+                let r = u8::from_str_radix(&s[2..4], 16).map_err(Error::ParseColorComponent)?;
+                let g = u8::from_str_radix(&s[4..6], 16).map_err(Error::ParseColorComponent)?;
+                let b = u8::from_str_radix(&s[6..8], 16).map_err(Error::ParseColorComponent)?;
                 (a, r, g, b)
             }
             _ => {
-                return error::ParseColor { s }.fail();
+                return Error::ParseColor(s.to_owned()).fail();
             }
         };
 

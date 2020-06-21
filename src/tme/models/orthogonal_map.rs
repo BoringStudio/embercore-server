@@ -6,7 +6,6 @@ use super::map::MapType;
 use super::map::RenderOrder;
 use super::orientation::Orientation;
 use super::property::Property;
-use super::tileset::Tileset;
 use super::tileset::TilesetRef;
 use super::utils;
 

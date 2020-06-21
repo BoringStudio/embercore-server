@@ -6,7 +6,6 @@ use super::data_source::DataSource;
 use super::layer::Compression;
 use super::layer::Encoding;
 use super::property::Property;
-use super::utils;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]

@@ -3,7 +3,7 @@ use serde::Serialize;
 
 use std::str::FromStr;
 
-use crate::tme::error;
+use crate::tme::error::Error;
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -15,7 +15,7 @@ pub enum Orientation {
 }
 
 impl FromStr for Orientation {
-    type Err = error::Error;
+    type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
@@ -23,7 +23,7 @@ impl FromStr for Orientation {
             "isometric" => Ok(Orientation::Isometric),
             "staggered" => Ok(Orientation::Staggered),
             "hexagonal" => Ok(Orientation::Hexagonal),
-            _ => error::ParseOrientation { s: s.to_owned() }.fail(),
+            _ => Error::ParseOrientation(s.to_owned()).fail(),
         }
     }
 }

@@ -9,6 +9,7 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
 
+#[allow(dead_code)]
 pub fn deserialize_value_to_string<'de, D>(d: D) -> Result<String, D::Error>
 where
     D: Deserializer<'de>,
@@ -17,6 +18,7 @@ where
     Ok(v.to_string())
 }
 
+#[allow(dead_code)]
 pub fn deserialize_str_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
 where
     T: Deserialize<'de> + FromStr,
@@ -63,6 +65,7 @@ where
     deserializer.deserialize_any(StringOrStruct(PhantomData))
 }
 
+#[allow(dead_code)]
 pub fn deserialize_str_or_seq<'de, T, D>(deserializer: D) -> Result<T, D::Error>
 where
     T: Deserialize<'de> + FromStr,
