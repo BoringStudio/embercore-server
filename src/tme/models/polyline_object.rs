@@ -40,7 +40,7 @@ mod tests {
                     "id":         42,
                     "name":       "Madoka",
                     "properties": null,
-                    "polyline":    [],
+                    "polyline":   [],
                     "rotation":   77.77,
                     "template":   null,
                     "type":       "npc",
@@ -54,7 +54,7 @@ mod tests {
                     "id":         42,
                     "name":       "Magica",
                     "properties": null,
-                    "polyline":    [
+                    "polyline":   [
                         {
                             "x": 77.7,
                             "y": 66.6
