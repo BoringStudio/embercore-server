@@ -103,7 +103,7 @@ mod tests {
     }
 
     #[test]
-    fn serialize_data_source() {
+    fn serialize_ellipse_object() {
         let expecteds: Vec<String> = vec![
             json! {
                 {
