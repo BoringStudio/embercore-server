@@ -35,7 +35,7 @@ mod tests {
     use serde_json::json;
 
     #[test]
-    fn deserialize_tile_layer() {
+    fn deserialize_image_layer() {
         let expecteds = vec![
             ImageLayer {
                 id:                777,
@@ -111,7 +111,7 @@ mod tests {
     }
 
     #[test]
-    fn serialize_tile_layer() {
+    fn serialize_image_layer() {
         let expecteds: Vec<String> = vec![
             json! {
                 {

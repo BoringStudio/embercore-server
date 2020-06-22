@@ -37,7 +37,7 @@ mod tests {
     use serde_json::json;
 
     #[test]
-    fn deserialize_tile_layer() {
+    fn deserialize_group_layer() {
         let expecteds = vec![
             GroupLayer {
                 id:         777,
@@ -223,7 +223,7 @@ mod tests {
     }
 
     #[test]
-    fn serialize_tile_layer() {
+    fn serialize_group_layer() {
         let expecteds: Vec<String> = vec![
             json! {
                 {

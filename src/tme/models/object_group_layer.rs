@@ -37,7 +37,7 @@ mod tests {
     use serde_json::json;
 
     #[test]
-    fn deserialize_tile_layer() {
+    fn deserialize_object_group_layer() {
         let expecteds = vec![
             ObjectGroupLayer {
                 draw_order: DrawOrder::TopDown,
@@ -169,7 +169,7 @@ mod tests {
     }
 
     #[test]
-    fn serialize_tile_layer() {
+    fn serialize_object_group_layer() {
         let expecteds: Vec<String> = vec![
             json! {
                 {
@@ -194,33 +194,33 @@ mod tests {
                     "id":         42,
                     "name":       "somebody",
                     "objects":    [
-                    {
-                        "point":      true,
-                        "height":     11.11,
-                        "id":         255,
-                        "name":       "B-baka",
-                        "properties": null,
-                        "rotation":   777.7,
-                        "template":   "template",
-                        "type":       "npc",
-                        "visible":    false,
-                        "width":      9.4,
-                        "x":          5.6,
-                        "y":          7.8,
-                    },
-                    {
-                        "height":     11.11,
-                        "id":         255,
-                        "name":       "Senpai",
-                        "properties": null,
-                        "rotation":   0.0,
-                        "template":   null,
-                        "type":       "npc",
-                        "visible":    false,
-                        "width":      9.4,
-                        "x":          5.6,
-                        "y":          7.8,
-                    },
+                        {
+                            "point":      true,
+                            "height":     11.11,
+                            "id":         255,
+                            "name":       "B-baka",
+                            "properties": null,
+                            "rotation":   777.7,
+                            "template":   "template",
+                            "type":       "npc",
+                            "visible":    false,
+                            "width":      9.4,
+                            "x":          5.6,
+                            "y":          7.8,
+                        },
+                        {
+                            "height":     11.11,
+                            "id":         255,
+                            "name":       "Senpai",
+                            "properties": null,
+                            "rotation":   0.0,
+                            "template":   null,
+                            "type":       "npc",
+                            "visible":    false,
+                            "width":      9.4,
+                            "x":          5.6,
+                            "y":          7.8,
+                        },
                     ],
                     "offsetx":    13.37,
                     "offsety":    42.42,
