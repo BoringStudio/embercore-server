@@ -31,11 +31,11 @@ mod tests {
     use serde_json::json;
 
     #[test]
-    fn deserialize_ellipse_object() {
+    fn deserialize_point_object() {
         let actuals: Vec<PointObject> = serde_json::from_value(json! {
             [
                 {
-                    "point":    true,
+                    "point":      true,
                     "height":     1111.8,
                     "id":         42,
                     "name":       "Madoka",
@@ -49,7 +49,7 @@ mod tests {
                     "y":          7.6
                 },
                 {
-                    "point":    true,
+                    "point":      true,
                     "height":     1111.8,
                     "id":         42,
                     "name":       "Magica",
@@ -103,11 +103,11 @@ mod tests {
     }
 
     #[test]
-    fn serialize_ellipse_object() {
+    fn serialize_point_object() {
         let expecteds: Vec<String> = vec![
             json! {
                 {
-                    "point":    true,
+                    "point":      true,
                     "height":     1111.8,
                     "id":         42,
                     "name":       "Madoka",
@@ -123,7 +123,7 @@ mod tests {
             },
             json! {
                 {
-                    "point":    true,
+                    "point":      true,
                     "height":     1111.8,
                     "id":         42,
                     "name":       "Magica",
