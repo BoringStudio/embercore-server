@@ -1,7 +1,4 @@
-use clap::{
-    App,
-    Arg,
-};
+use clap::{App, Arg};
 
 use embercore_server_lib::config::*;
 

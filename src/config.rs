@@ -1,11 +1,6 @@
 use std::net::SocketAddr;
 
-use config::{
-    Config as RowConfig,
-    ConfigError,
-    File,
-    FileFormat,
-};
+use config::{Config as RowConfig, ConfigError, File, FileFormat};
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize)]
