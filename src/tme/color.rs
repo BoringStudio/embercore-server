@@ -36,8 +36,9 @@ impl Color {
 impl FromStr for Color {
     type Err = Error;
 
+    #[allow(clippy::many_single_char_names)]
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let s = if s.starts_with("#") { &s[1..] } else { s };
+        let s = if s.starts_with('#') { &s[1..] } else { s };
 
         let (a, r, g, b) = match s.len() {
             6 => {
@@ -65,10 +66,7 @@ impl FromStr for Color {
 
 impl ToString for Color {
     fn to_string(&self) -> String {
-        String::from(format!(
-            "#{:02X}{:02X}{:02X}{:02X}",
-            self.a, self.r, self.g, self.b
-        ))
+        format!("#{:02X}{:02X}{:02X}{:02X}", self.a, self.r, self.g, self.b)
     }
 }
 
