@@ -3,7 +3,6 @@
 
 pub mod config;
 pub mod prelude;
-pub mod tme;
 
 use futures::prelude::*;
 use tokio::net::TcpListener;
