@@ -18,36 +18,38 @@ use crate::tme::color::Color;
 pub struct HexagonalMap {
     #[serde(with = "opt_color_serde")]
     #[serde(rename = "backgroundcolor")]
-    pub background_color: Option<Color>,
-    pub height:           i64,
+    pub background_color:  Option<Color>,
+    #[serde(rename = "compressionlevel")]
+    pub compression_level: i64,
+    pub height:            i64,
     #[serde(rename = "hexsidelength")]
-    pub hex_side_length:  i64,
-    pub infinite:         bool,
-    pub layers:           Vec<Layer>,
+    pub hex_side_length:   i64,
+    pub infinite:          bool,
+    pub layers:            Vec<Layer>,
     #[serde(rename = "nextlayerid")]
-    pub next_layer_id:    i64,
+    pub next_layer_id:     i64,
     #[serde(rename = "nextobjectid")]
-    pub next_object_id:   i64,
-    pub properties:       Option<Vec<Property>>,
+    pub next_object_id:    i64,
+    pub properties:        Option<Vec<Property>>,
     #[serde(rename = "renderorder")]
-    pub render_order:     RenderOrder,
+    pub render_order:      RenderOrder,
     #[serde(rename = "staggeraxis")]
-    pub stagger_axis:     StaggerAxis,
+    pub stagger_axis:      StaggerAxis,
     #[serde(rename = "staggerindex")]
-    pub stagger_index:    StaggerIndex,
+    pub stagger_index:     StaggerIndex,
     #[serde(rename = "tiledversion")]
-    pub tiled_version:    String,
+    pub tiled_version:     String,
     #[serde(rename = "tileheight")]
-    pub tile_height:      i64,
+    pub tile_height:       i64,
     #[serde(rename = "tilesets")]
-    pub tile_sets:        Vec<TilesetContainer>,
+    pub tile_sets:         Vec<TilesetContainer>,
     #[serde(rename = "tilewidth")]
-    pub tile_width:       i64,
+    pub tile_width:        i64,
     #[serde(rename = "type")]
-    pub map_type:         MapType,
+    pub map_type:          MapType,
     #[serde(deserialize_with = "utils::deserialize_value_to_string")]
-    pub version:          String,
-    pub width:            i64,
+    pub version:           String,
+    pub width:             i64,
 }
 
 #[cfg(test)]
@@ -69,31 +71,33 @@ mod tests {
         let actuals: Vec<HexagonalMap> = serde_json::from_value(json! {
             [
                 {
-                    "backgroundcolor": null,
-                    "height":          77,
-                    "hexsidelength":   8,
-                    "infinite":        true,
-                    "layers":          [],
-                    "nextlayerid":     0,
-                    "nextobjectid":    0,
-                    "properties":      null,
-                    "renderorder":     "right-down",
-                    "staggeraxis":     "x",
-                    "staggerindex":    "odd",
-                    "tiledversion":    "1.3.5",
-                    "tileheight":      99,
-                    "tilesets":        [],
-                    "tilewidth":       89,
-                    "type":            "map",
-                    "version":         1.2,
-                    "width":           77
+                    "backgroundcolor":  null,
+                    "compressionlevel": -1,
+                    "height":           77,
+                    "hexsidelength":    8,
+                    "infinite":         true,
+                    "layers":           [],
+                    "nextlayerid":      0,
+                    "nextobjectid":     0,
+                    "properties":       null,
+                    "renderorder":      "right-down",
+                    "staggeraxis":      "x",
+                    "staggerindex":     "odd",
+                    "tiledversion":     "1.3.5",
+                    "tileheight":       99,
+                    "tilesets":         [],
+                    "tilewidth":        89,
+                    "type":             "map",
+                    "version":          1.2,
+                    "width":            77
                 },
                 {
-                    "backgroundcolor": null,
-                    "height":          77,
-                    "hexsidelength":   8,
-                    "infinite":        true,
-                    "layers":          [
+                    "backgroundcolor":  null,
+                    "compressionlevel": -1,
+                    "height":           77,
+                    "hexsidelength":    8,
+                    "infinite":         true,
+                    "layers":           [
                         {
                             "type":   "tilelayer",
                             "chunks": [
@@ -194,31 +198,33 @@ mod tests {
 
         let expecteds: Vec<HexagonalMap> = vec![
             HexagonalMap {
-                background_color: None,
-                height:           77,
-                hex_side_length:  8,
-                infinite:         true,
-                layers:           vec![],
-                next_layer_id:    0,
-                next_object_id:   0,
-                properties:       None,
-                render_order:     RenderOrder::RightDown,
-                stagger_axis:     StaggerAxis::X,
-                stagger_index:    StaggerIndex::Odd,
-                tiled_version:    "1.3.5".to_string(),
-                tile_height:      99,
-                tile_sets:        vec![],
-                tile_width:       89,
-                map_type:         MapType::Map,
-                version:          "1.2".to_string(),
-                width:            77,
+                background_color:  None,
+                compression_level: -1,
+                height:            77,
+                hex_side_length:   8,
+                infinite:          true,
+                layers:            vec![],
+                next_layer_id:     0,
+                next_object_id:    0,
+                properties:        None,
+                render_order:      RenderOrder::RightDown,
+                stagger_axis:      StaggerAxis::X,
+                stagger_index:     StaggerIndex::Odd,
+                tiled_version:     "1.3.5".to_string(),
+                tile_height:       99,
+                tile_sets:         vec![],
+                tile_width:        89,
+                map_type:          MapType::Map,
+                version:           "1.2".to_string(),
+                width:             77,
             },
             HexagonalMap {
-                background_color: None,
-                height:           77,
-                hex_side_length:  8,
-                infinite:         true,
-                layers:           vec![
+                background_color:  None,
+                compression_level: -1,
+                height:            77,
+                hex_side_length:   8,
+                infinite:          true,
+                layers:            vec![
                     Layer::TileLayer(TileLayer {
                         chunks:      Some(vec![
                             Chunk {
@@ -299,19 +305,19 @@ mod tests {
                         y:          37,
                     }),
                 ],
-                next_layer_id:    0,
-                next_object_id:   0,
-                properties:       None,
-                render_order:     RenderOrder::LeftUp,
-                stagger_axis:     StaggerAxis::Y,
-                stagger_index:    StaggerIndex::Even,
-                tiled_version:    "1.3.5".to_string(),
-                tile_height:      99,
-                tile_sets:        vec![],
-                tile_width:       89,
-                map_type:         MapType::Map,
-                version:          "1.2".to_string(),
-                width:            77,
+                next_layer_id:     0,
+                next_object_id:    0,
+                properties:        None,
+                render_order:      RenderOrder::LeftUp,
+                stagger_axis:      StaggerAxis::Y,
+                stagger_index:     StaggerIndex::Even,
+                tiled_version:     "1.3.5".to_string(),
+                tile_height:       99,
+                tile_sets:         vec![],
+                tile_width:        89,
+                map_type:          MapType::Map,
+                version:           "1.2".to_string(),
+                width:             77,
             },
         ];
 
@@ -325,33 +331,35 @@ mod tests {
         let expecteds: Vec<String> = vec![
             json! {
                 {
-                    "backgroundcolor": null,
-                    "height":          77,
-                    "hexsidelength":   8,
-                    "infinite":        true,
-                    "layers":          [],
-                    "nextlayerid":     0,
-                    "nextobjectid":    0,
-                    "properties":      null,
-                    "renderorder":     "right-down",
-                    "staggeraxis":     "x",
-                    "staggerindex":    "odd",
-                    "tiledversion":    "1.3.5",
-                    "tileheight":      99,
-                    "tilesets":        [],
-                    "tilewidth":       89,
-                    "type":            "map",
-                    "version":         "1.2",
-                    "width":           77
+                    "backgroundcolor":  null,
+                    "compressionlevel": -1,
+                    "height":           77,
+                    "hexsidelength":    8,
+                    "infinite":         true,
+                    "layers":           [],
+                    "nextlayerid":      0,
+                    "nextobjectid":     0,
+                    "properties":       null,
+                    "renderorder":      "right-down",
+                    "staggeraxis":      "x",
+                    "staggerindex":     "odd",
+                    "tiledversion":     "1.3.5",
+                    "tileheight":       99,
+                    "tilesets":         [],
+                    "tilewidth":        89,
+                    "type":             "map",
+                    "version":          "1.2",
+                    "width":            77
                 }
             },
             json! {
                 {
-                    "backgroundcolor": null,
-                    "height":          77,
-                    "hexsidelength":   8,
-                    "infinite":        true,
-                    "layers":          [
+                    "backgroundcolor":  null,
+                    "compressionlevel": -1,
+                    "height":           77,
+                    "hexsidelength":    8,
+                    "infinite":         true,
+                    "layers":           [
                         {
                             "type":   "tilelayer",
                             "chunks": [
@@ -454,31 +462,33 @@ mod tests {
 
         let actuals: Vec<String> = vec![
             HexagonalMap {
-                background_color: None,
-                height:           77,
-                hex_side_length:  8,
-                infinite:         true,
-                layers:           vec![],
-                next_layer_id:    0,
-                next_object_id:   0,
-                properties:       None,
-                render_order:     RenderOrder::RightDown,
-                stagger_axis:     StaggerAxis::X,
-                stagger_index:    StaggerIndex::Odd,
-                tiled_version:    "1.3.5".to_string(),
-                tile_height:      99,
-                tile_sets:        vec![],
-                tile_width:       89,
-                map_type:         MapType::Map,
-                version:          "1.2".to_string(),
-                width:            77,
+                background_color:  None,
+                compression_level: -1,
+                height:            77,
+                hex_side_length:   8,
+                infinite:          true,
+                layers:            vec![],
+                next_layer_id:     0,
+                next_object_id:    0,
+                properties:        None,
+                render_order:      RenderOrder::RightDown,
+                stagger_axis:      StaggerAxis::X,
+                stagger_index:     StaggerIndex::Odd,
+                tiled_version:     "1.3.5".to_string(),
+                tile_height:       99,
+                tile_sets:         vec![],
+                tile_width:        89,
+                map_type:          MapType::Map,
+                version:           "1.2".to_string(),
+                width:             77,
             },
             HexagonalMap {
-                background_color: None,
-                height:           77,
-                hex_side_length:  8,
-                infinite:         true,
-                layers:           vec![
+                background_color:  None,
+                compression_level: -1,
+                height:            77,
+                hex_side_length:   8,
+                infinite:          true,
+                layers:            vec![
                     Layer::TileLayer(TileLayer {
                         chunks:      Some(vec![
                             Chunk {
@@ -559,19 +569,19 @@ mod tests {
                         y:          37,
                     }),
                 ],
-                next_layer_id:    0,
-                next_object_id:   0,
-                properties:       None,
-                render_order:     RenderOrder::LeftUp,
-                stagger_axis:     StaggerAxis::Y,
-                stagger_index:    StaggerIndex::Even,
-                tiled_version:    "1.3.5".to_string(),
-                tile_height:      99,
-                tile_sets:        vec![],
-                tile_width:       89,
-                map_type:         MapType::Map,
-                version:          "1.2".to_string(),
-                width:            77,
+                next_layer_id:     0,
+                next_object_id:    0,
+                properties:        None,
+                render_order:      RenderOrder::LeftUp,
+                stagger_axis:      StaggerAxis::Y,
+                stagger_index:     StaggerIndex::Even,
+                tiled_version:     "1.3.5".to_string(),
+                tile_height:       99,
+                tile_sets:         vec![],
+                tile_width:        89,
+                map_type:          MapType::Map,
+                version:           "1.2".to_string(),
+                width:             77,
             },
         ]
         .into_iter()
