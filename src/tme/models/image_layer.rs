@@ -21,7 +21,8 @@ pub struct ImageLayer {
     pub start_x:           Option<i64>,
     #[serde(rename = "starty")]
     pub start_y:           Option<i64>,
-    #[serde(rename = "transparentcolor", with = "opt_color_serde")]
+    #[serde(with = "opt_color_serde")]
+    #[serde(rename = "transparentcolor")]
     pub transparent_color: Option<Color>,
     pub visible:           bool,
     pub x:                 i64,
@@ -72,34 +73,34 @@ mod tests {
         let actuals: Vec<ImageLayer> = serde_json::from_value(json! {
             [
                 {
-                    "id":                777,
-                    "image":             "/dev/null".to_string(),
-                    "name":              "somebody".to_string(),
+                    "id":               777,
+                    "image":            "/dev/null".to_string(),
+                    "name":             "somebody".to_string(),
                     "offsetx":          null,
                     "offsety":          null,
-                    "opacity":           42.42,
-                    "properties":        null,
+                    "opacity":          42.42,
+                    "properties":       null,
                     "startx":           null,
                     "starty":           null,
                     "transparentcolor": null,
-                    "visible":           true,
-                    "x":                 777,
-                    "y":                 666,
+                    "visible":          true,
+                    "x":                777,
+                    "y":                666,
                 },
                 {
-                    "id":                123,
-                    "image":             "/dev/null",
-                    "name":              "somebody",
+                    "id":               123,
+                    "image":            "/dev/null",
+                    "name":             "somebody",
                     "offsetx":          0.1,
                     "offsety":          2.3,
-                    "opacity":           42.42,
-                    "properties":        null,
+                    "opacity":          42.42,
+                    "properties":       null,
                     "startx":           4,
                     "starty":           5,
                     "transparentcolor": "#FF00FFAA",
-                    "visible":           true,
-                    "x":                 777,
-                    "y":                 666,
+                    "visible":          true,
+                    "x":                777,
+                    "y":                666,
                 }
             ]
         })
@@ -115,36 +116,36 @@ mod tests {
         let expecteds: Vec<String> = vec![
             json! {
                 {
-                    "id":                777,
-                    "image":             "/dev/null".to_string(),
-                    "name":              "somebody".to_string(),
+                    "id":               777,
+                    "image":            "/dev/null".to_string(),
+                    "name":             "somebody".to_string(),
                     "offsetx":          null,
                     "offsety":          null,
-                    "opacity":           42.42,
-                    "properties":        null,
+                    "opacity":          42.42,
+                    "properties":       null,
                     "startx":           null,
                     "starty":           null,
                     "transparentcolor": null,
-                    "visible":           true,
-                    "x":                 777,
-                    "y":                 666,
+                    "visible":          true,
+                    "x":                777,
+                    "y":                666,
                 }
             },
             json! {
                 {
-                    "id":                123,
-                    "image":             "/dev/null",
-                    "name":              "somebody",
+                    "id":               123,
+                    "image":            "/dev/null",
+                    "name":             "somebody",
                     "offsetx":          0.1,
                     "offsety":          2.3,
-                    "opacity":           42.42,
-                    "properties":        null,
+                    "opacity":          42.42,
+                    "properties":       null,
                     "startx":           4,
                     "starty":           5,
                     "transparentcolor": "#FF00FFAA",
-                    "visible":           true,
-                    "x":                 777,
-                    "y":                 666,
+                    "visible":          true,
+                    "x":                777,
+                    "y":                666,
                 }
             },
         ]

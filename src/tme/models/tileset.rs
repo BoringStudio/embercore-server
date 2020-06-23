@@ -1,6 +1,8 @@
 use serde::Deserialize;
 use serde::Serialize;
 
+use std::path::PathBuf;
+
 use super::grid::Grid;
 use super::property::Property;
 use super::terrain::Terrain;
@@ -13,6 +15,13 @@ use crate::tme::color::opt_color_serde;
 use crate::tme::color::Color;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase", untagged)]
+pub enum TilesetContainer {
+    Tileset(Tileset),
+    TilesetRef(TilesetRef),
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub struct Tileset {
     #[serde(with = "opt_color_serde")]
@@ -21,8 +30,6 @@ pub struct Tileset {
     pub background_color:  Option<Color>,
     #[serde(default = "utils::make_none_option")]
     pub columns:           Option<i64>,
-    #[serde(rename = "firstgid")]
-    pub first_gid:         i64,
     #[serde(default = "utils::make_none_option")]
     pub grid:              Option<Grid>,
     #[serde(default = "utils::make_none_option")]
@@ -38,8 +45,6 @@ pub struct Tileset {
     pub name:              String,
     #[serde(default = "utils::make_none_option")]
     pub properties:        Option<Vec<Property>>,
-    #[serde(default = "utils::make_none_option")]
-    pub source:            Option<String>,
     pub spacing:           i64,
     #[serde(default = "utils::make_none_option")]
     pub terrains:          Option<Vec<Terrain>>,
@@ -74,7 +79,7 @@ pub struct Tileset {
 pub struct TilesetRef {
     #[serde(rename = "firstgid")]
     pub first_gid: i64,
-    pub source:    String,
+    pub source:    PathBuf,
 }
 
 #[cfg(test)]
@@ -90,7 +95,6 @@ mod tests {
                 {
                     "backgroundcolor":  null,
                     "columns":          null,
-                    "firstgid":         0,
                     "grid":             null,
                     "image":            null,
                     "imageheight":      null,
@@ -98,7 +102,6 @@ mod tests {
                     "margin":           null,
                     "name":             "",
                     "properties":       null,
-                    "source":           null,
                     "spacing":          0,
                     "terrains":         null,
                     "tilecount":        0,
@@ -119,7 +122,6 @@ mod tests {
         let expecteds: Vec<Tileset> = vec![Tileset {
             background_color:  None,
             columns:           None,
-            first_gid:         0,
             grid:              None,
             image:             None,
             image_height:      None,
@@ -127,7 +129,6 @@ mod tests {
             margin:            None,
             name:              "".to_string(),
             properties:        None,
-            source:            None,
             spacing:           0,
             terrains:          None,
             tile_count:        0,
@@ -153,7 +154,6 @@ mod tests {
             {
                 "backgroundcolor":  null,
                 "columns":          null,
-                "firstgid":         0,
                 "grid":             null,
                 "image":            null,
                 "imageheight":      null,
@@ -161,7 +161,6 @@ mod tests {
                 "margin":           null,
                 "name":             "",
                 "properties":       null,
-                "source":           null,
                 "spacing":          0,
                 "terrains":         null,
                 "tilecount":        0,
@@ -183,7 +182,6 @@ mod tests {
         let actuals: Vec<String> = vec![Tileset {
             background_color:  None,
             columns:           None,
-            first_gid:         0,
             grid:              None,
             image:             None,
             image_height:      None,
@@ -191,7 +189,6 @@ mod tests {
             margin:            None,
             name:              "".to_string(),
             properties:        None,
-            source:            None,
             spacing:           0,
             terrains:          None,
             tile_count:        0,

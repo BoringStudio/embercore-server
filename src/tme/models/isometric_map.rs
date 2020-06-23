@@ -4,9 +4,8 @@ use serde::Serialize;
 use super::layer::Layer;
 use super::map::MapType;
 use super::map::RenderOrder;
-use super::orientation::Orientation;
 use super::property::Property;
-use super::tileset::Tileset;
+use super::tileset::TilesetContainer;
 use super::utils;
 
 use crate::tme::color::opt_color_serde;
@@ -25,7 +24,6 @@ pub struct IsometricMap {
     pub next_layer_id:    i64,
     #[serde(rename = "nextobjectid")]
     pub next_object_id:   i64,
-    pub orientation:      Orientation,
     pub properties:       Option<Vec<Property>>,
     #[serde(rename = "renderorder")]
     pub render_order:     RenderOrder,
@@ -34,7 +32,7 @@ pub struct IsometricMap {
     #[serde(rename = "tileheight")]
     pub tile_height:      i64,
     #[serde(rename = "tilesets")]
-    pub tile_sets:        Vec<Tileset>,
+    pub tile_sets:        Vec<TilesetContainer>,
     #[serde(rename = "tilewidth")]
     pub tile_width:       i64,
     #[serde(rename = "type")]
@@ -69,7 +67,6 @@ mod tests {
                     "layers":          [],
                     "nextlayerid":     0,
                     "nextobjectid":    0,
-                    "orientation":     "orthogonal",
                     "properties":      null,
                     "renderorder":     "right-down",
                     "tiledversion":    "1.3.5",
@@ -167,7 +164,6 @@ mod tests {
                     ],
                     "nextlayerid":  0,
                     "nextobjectid": 0,
-                    "orientation":  "orthogonal",
                     "properties":   null,
                     "renderorder":  "left-up",
                     "tiledversion": "1.3.5",
@@ -190,7 +186,6 @@ mod tests {
                 layers:           vec![],
                 next_layer_id:    0,
                 next_object_id:   0,
-                orientation:      Orientation::Orthogonal,
                 properties:       None,
                 render_order:     RenderOrder::RightDown,
                 tiled_version:    "1.3.5".to_string(),
@@ -288,7 +283,6 @@ mod tests {
                 ],
                 next_layer_id:    0,
                 next_object_id:   0,
-                orientation:      Orientation::Orthogonal,
                 properties:       None,
                 render_order:     RenderOrder::LeftUp,
                 tiled_version:    "1.3.5".to_string(),
@@ -317,7 +311,6 @@ mod tests {
                     "layers":          [],
                     "nextlayerid":     0,
                     "nextobjectid":    0,
-                    "orientation":     "orthogonal",
                     "properties":      null,
                     "renderorder":     "right-down",
                     "tiledversion":    "1.3.5",
@@ -417,7 +410,6 @@ mod tests {
                     ],
                     "nextlayerid":  0,
                     "nextobjectid": 0,
-                    "orientation":  "orthogonal",
                     "properties":   null,
                     "renderorder":  "left-up",
                     "tiledversion": "1.3.5",
@@ -442,7 +434,6 @@ mod tests {
                 layers:           vec![],
                 next_layer_id:    0,
                 next_object_id:   0,
-                orientation:      Orientation::Orthogonal,
                 properties:       None,
                 render_order:     RenderOrder::RightDown,
                 tiled_version:    "1.3.5".to_string(),
@@ -540,7 +531,6 @@ mod tests {
                 ],
                 next_layer_id:    0,
                 next_object_id:   0,
-                orientation:      Orientation::Orthogonal,
                 properties:       None,
                 render_order:     RenderOrder::LeftUp,
                 tiled_version:    "1.3.5".to_string(),

@@ -6,9 +6,8 @@ use super::map::MapType;
 use super::map::RenderOrder;
 use super::map::StaggerAxis;
 use super::map::StaggerIndex;
-use super::orientation::Orientation;
 use super::property::Property;
-use super::tileset::Tileset;
+use super::tileset::TilesetContainer;
 use super::utils;
 
 use crate::tme::color::opt_color_serde;
@@ -27,7 +26,6 @@ pub struct StaggeredMap {
     pub next_layer_id:    i64,
     #[serde(rename = "nextobjectid")]
     pub next_object_id:   i64,
-    pub orientation:      Orientation,
     pub properties:       Option<Vec<Property>>,
     #[serde(rename = "renderorder")]
     pub render_order:     RenderOrder,
@@ -40,7 +38,7 @@ pub struct StaggeredMap {
     #[serde(rename = "tileheight")]
     pub tile_height:      i64,
     #[serde(rename = "tilesets")]
-    pub tile_sets:        Vec<Tileset>,
+    pub tile_sets:        Vec<TilesetContainer>,
     #[serde(rename = "tilewidth")]
     pub tile_width:       i64,
     #[serde(rename = "type")]
