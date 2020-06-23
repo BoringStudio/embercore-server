@@ -22,6 +22,8 @@ jobs:
         with:
           command: check
 
+      - uses: codecov/codecov-action@v1
+
   test:
     name: Test Suite
     runs-on: ubuntu-latest
