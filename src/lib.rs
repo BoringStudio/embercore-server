@@ -1,9 +1,11 @@
 // TODO: remove this after stabilized backtrace
 #![feature(backtrace)]
 
+pub mod components;
 pub mod config;
 pub mod prelude;
 
+use anyhow::Result;
 use futures::prelude::*;
 use tokio::net::TcpListener;
 use tokio_serde::formats::SymmetricalBincode;
@@ -13,7 +15,7 @@ use embercore::*;
 
 use crate::config::Config;
 
-pub async fn run(settings: Config) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn run(settings: Config) -> Result<()> {
     let mut listener = TcpListener::bind(settings.server_address).await.unwrap();
 
     log::info!("listening on {:?}", listener.local_addr());

@@ -19,6 +19,7 @@ chrono = { version = "0.4.11", features = ["serde"] }
 config = { version = "0.9", features = ["yaml"] }
 clap = { version = "2.33" }
 futures = { version = "0.3" }
+glm = "0.2.3"
 log = { version = "0.4", features = ["std", "serde"] }
 rust_decimal = "1"
 serde = { version = "1", features = ["derive"] }
