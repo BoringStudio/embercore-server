@@ -1,10 +1,9 @@
 use glm::Vec2;
-use serde::export::Formatter;
-use specs::prelude::*;
+use specs::{Component, VecStorage};
 
 use std::fmt::{self, Debug};
 
-#[derive(Default, Component, Clone)]
+#[derive(Component, Clone)]
 #[storage(VecStorage)]
 pub struct Position(pub Vec2);
 
@@ -22,6 +21,9 @@ impl From<Vec2> for Position {
 
 impl Debug for Position {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.0.fmt(f)
+        f.debug_struct("Position")
+            .field("x", &self.0.x)
+            .field("y", &self.0.y)
+            .finish()
     }
 }
